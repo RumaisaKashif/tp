@@ -12,12 +12,11 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Patient;
-import seedu.address.model.person.Person;
 
 /**
  * Adds a patient to the address book.
  */
-public class AddPatCommand extends Command{
+public class AddPatCommand extends Command {
 
     public static final String COMMAND_WORD = "addpat";
 
@@ -39,14 +38,14 @@ public class AddPatCommand extends Command{
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
 
-    private final Person toAdd;
+    private final Patient toAdd;
 
     /**
      * Creates an AddCommand to add the specified {@code Person}
      */
-    public AddPatCommand(Person person) {
-        requireNonNull(person);
-        toAdd = person;
+    public AddPatCommand(Patient patient) {
+        requireNonNull(patient);
+        toAdd = patient;
     }
 
     @Override

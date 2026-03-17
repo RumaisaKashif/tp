@@ -9,22 +9,22 @@ import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailur
 
 import org.junit.jupiter.api.Test;
 
-import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.AddPatCommand;
 import seedu.address.model.person.Phone;
 
 public class AddPatCommandParserTest {
-    private AddCommandParser parser = new AddCommandParser();
+    private AddPatCommandParser parser = new AddPatCommandParser();
 
     @Test
     public void parse_missingNameField_failure() {
         assertParseFailure(parser, PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddPatCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_missingPhoneField_failure() {
         assertParseFailure(parser, NAME_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddPatCommand.MESSAGE_USAGE));
     }
 
     @Test

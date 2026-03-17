@@ -5,6 +5,8 @@ import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.model.person.Doctor;
+import seedu.address.model.person.Patient;
 import seedu.address.model.person.Person;
 
 /**
@@ -68,6 +70,18 @@ public interface Model {
      * {@code person} must not already exist in the address book.
      */
     void addPerson(Person person);
+
+    /**
+     * Adds the given doctor.
+     * {@code doctor} must not already exist in the address book.
+     */
+    void addDoctor(Doctor doctor);
+
+    /**
+     * Adds the given patient.
+     * {@code patient} must not already exist in the address book.
+     */
+    void addPatient(Patient patient);
 
     /**
      * Replaces the given person {@code target} with {@code editedPerson}.

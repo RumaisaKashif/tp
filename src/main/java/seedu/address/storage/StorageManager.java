@@ -111,6 +111,21 @@ public class StorageManager implements Storage {
     }
 
     @Override
+    public void savePatientData(ReadOnlyAddressBook patientData) throws IOException {
+        saveAddressBook(patientData, patientDataStorage.getAddressBookFilePath());
+    }
+
+    @Override
+    public void saveDoctorData(ReadOnlyAddressBook doctorData) throws IOException {
+        saveAddressBook(doctorData, doctorDataStorage.getAddressBookFilePath());
+    }
+
+    @Override
+    public void saveScheduleData(ReadOnlyAddressBook scheduleData) throws IOException {
+        saveAddressBook(scheduleData, scheduleDataStorage.getAddressBookFilePath());
+    }
+
+    @Override
     public void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
         addressBookStorage.saveAddressBook(addressBook, filePath);

@@ -41,4 +41,10 @@ public interface Storage extends AddressBookStorage, UserPrefsStorage {
     @Override
     void saveAddressBook(ReadOnlyAddressBook addressBook) throws IOException;
 
+    void savePatientData(ReadOnlyAddressBook patientData) throws IOException;
+
+    void saveDoctorData(ReadOnlyAddressBook doctorData) throws IOException;
+
+    void saveScheduleData(ReadOnlyAddressBook scheduleData) throws IOException;
+
 }

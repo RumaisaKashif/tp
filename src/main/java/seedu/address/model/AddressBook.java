@@ -97,11 +97,19 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     * Removes {@code key} from this {@code AddressBook}.
+     * Removes {@code doc} from this {@code AddressBook}.
      * {@code key} must exist in the address book.
      */
-    public void removePerson(Person key) {
-        persons.remove(key);
+    public void removeDoctor(Doctor doc) {
+        persons.remove(doc);
+    }
+
+    /**
+     * Removes {@code pat} from this {@code AddressBook}.
+     * {@code key} must exist in the address book.
+     */
+    public void removePatient(Patient pat) {
+        persons.remove(pat);
     }
 
     //// util methods

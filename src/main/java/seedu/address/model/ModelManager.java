@@ -129,8 +129,13 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void deletePerson(Person target) {
-        addressBook.removePerson(target);
+    public void deleteDoctor(Doctor doctor) {
+        addressBook.removeDoctor(doctor);
+    }
+
+    @Override
+    public void deletePatient(Patient patient) {
+        addressBook.removePatient(patient);
     }
 
     @Override

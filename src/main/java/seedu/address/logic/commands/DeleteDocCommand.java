@@ -9,6 +9,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.person.Doctor;
 import seedu.address.model.person.Person;
 
 /**
@@ -41,7 +42,10 @@ public class DeleteDocCommand extends Command {
         }
 
         Person personToDelete = lastShownList.get(targetIndex.getZeroBased());
-        model.deletePerson(personToDelete);
+        if (!(personToDelete instanceof Doctor)) {
+            throw new CommandException("The person at the specified index is not a doctor.");
+        }
+        model.deleteDoctor((Doctor) personToDelete);
         return new CommandResult(String.format(MESSAGE_DELETE_DOCTOR_SUCCESS, Messages.format(personToDelete)));
     }
 

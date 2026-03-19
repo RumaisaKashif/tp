@@ -88,6 +88,7 @@ public class ScheduleManager {
 
             for (int i = 0; i < 7; i++) {
 
+
                 LocalDate date = today.plusDays(i);
                 Map<String, String> slots = new LinkedHashMap<>();
 
@@ -134,8 +135,7 @@ public class ScheduleManager {
                         throw new IOException("Date not found!");
                     }
 
-                    Map<String, String> slots =
-                            (Map<String, String>) doctorSchedule.get(date);
+                    Map<String, Object> slots = (Map<String, Object>) doctorSchedule.get(date);
 
 
                     slots.put(time, patName);

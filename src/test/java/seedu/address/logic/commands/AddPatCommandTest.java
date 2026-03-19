@@ -31,7 +31,7 @@ public class AddPatCommandTest {
         Patient validPatient = new PatientBuilder().build();
         AddPatCommand addPatCommand = new AddPatCommand(validPatient);
         Model expectedModel = new ModelManager();
-        expectedModel.addPerson(validPatient);
+        expectedModel.addPatient(validPatient);
 
         assertCommandSuccess(addPatCommand, model,
                 String.format(AddPatCommand.MESSAGE_SUCCESS, Messages.format(validPatient)),
@@ -43,7 +43,7 @@ public class AddPatCommandTest {
         model = new ModelManager();
         Patient patient = new PatientBuilder().build();
 
-        model.addPerson(patient); // already exists
+        model.addPatient(patient); // already exists
 
         AddPatCommand addPatCommand = new AddPatCommand(patient);
 

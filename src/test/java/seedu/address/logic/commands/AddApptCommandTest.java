@@ -46,6 +46,7 @@ public class AddApptCommandTest {
         Model model = new ModelManager();
         Appointment appt = new Appointment("John Tan", "Jane Doe",
                                             "2026-03-20", "10:00");
+
         AddApptCommand command = new AddApptCommand(appt);
 
         CommandResult result = command.execute(model);

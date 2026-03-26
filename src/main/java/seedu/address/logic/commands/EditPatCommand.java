@@ -99,7 +99,7 @@ public class EditPatCommand extends Command {
      */
     private static Patient createEditedPatient(Patient patientToEdit,
                                                EditPatCommand.EditPatDescriptor editPatDescriptor) {
-        requireNonNull(patientToEdit);
+        assert patientToEdit != null;
 
         Name updatedName = editPatDescriptor.getName().orElse(patientToEdit.getName());
         Phone updatedPhone = editPatDescriptor.getPhone().orElse(patientToEdit.getPhone());

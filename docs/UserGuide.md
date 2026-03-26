@@ -348,6 +348,7 @@ Action     | Format, Examples
 **Delete Doctor** | `deldoc INDEX`<br> e.g., `deldoc 3`
 **Delete Patient** | `delpat INDEX` <br> e.g., `delpat 2`
 **Edit Patient** | `editpat INDEX n/NAME p/PHONE e/EMAIL a/ADDRESS` <br> e.g., `editpat 2 n/James Ho p/22224444
+**Edit Appointment**|  `editappt d/OLD_DOCTOR date/OLD_DATE time/OLD_TIME (n/NEW_NAME) (d/NEW_DOC) (date/NEW_DATE) (time/NEW_TIME)` <br> e.g., `editappt d/Louis date/2026-03-28 time/09:00 d/Harvey time/10:00`p/22224444
 **Exit** | `exit`
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List**   | `list`

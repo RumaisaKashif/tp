@@ -399,9 +399,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1. Receptionist enters the view schedule command with a doctor name and date.
-2. System validates the doctor name and date.
-3. System displays all half-hourly slots for that doctor on that date, each marked as Available or Booked.
+1. Receptionist enters the view schedule command with a doctor name and optionally a date.
+2. System validates the doctor name (and, if exists, the date).
+3. System displays all half-hourly slots for that doctor for next 7 days or on a specific date, each marked as Available or Booked.
 
    Use case ends.
 

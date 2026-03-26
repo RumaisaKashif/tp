@@ -250,8 +250,8 @@ public class ModelManager implements Model {
             throw new IOException("The new patient '" + newPat + "' does not exist in the Address Book.");
         }
 
-        deleteApptFromPatient(oldPatName, oldAppt); // Remove from Patient's list
-        ScheduleManager.delAppt(oldAppt);          // Remove from JSON
+        deleteApptFromPatient(oldPatName, oldAppt);
+        ScheduleManager.delAppt(oldAppt);
 
         this.addAppt(editedAppt);
     }

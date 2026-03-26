@@ -207,10 +207,14 @@ public class ScheduleManager {
                 .findFirst()
                 .orElse(null);
 
-        if (matchedDoctor == null) return null;
+        if (matchedDoctor == null) {
+            return null;
+        }
 
         Map<String, Map<String, String>> doctorSchedule = data.get(matchedDoctor);
-        if (!doctorSchedule.containsKey(date)) return null;
+        if (!doctorSchedule.containsKey(date)) {
+            return null;
+        }
 
         return doctorSchedule.get(date).get(time);
 

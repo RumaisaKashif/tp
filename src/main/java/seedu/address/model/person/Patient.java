@@ -13,6 +13,14 @@ import seedu.address.model.tag.Tag;
 public class Patient extends Person {
     private ArrayList<Appointment> apptList;
 
+    /**
+     * initialises a Patient object
+     * @param name
+     * @param phone
+     * @param email
+     * @param address
+     * @param tags
+     */
     public Patient(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
         super(name, phone, email, address, tags);
         this.apptList = new ArrayList<>();

@@ -2,16 +2,21 @@ package seedu.address.logic.commands;
 
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.parser.CliSyntax.*;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DOCTOR;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TIME;
 
 import java.io.IOException;
-import java.time.LocalDate;
 
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.appointment.Appointment;
 
-public class EditApptCommand extends Command{
+/**
+ * Edits an existing appointment
+ */
+
+public class EditApptCommand extends Command {
     public static final String COMMAND_WORD = "editappt";
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": changes the doctor/patient/date/time of an appointment"
@@ -38,7 +43,16 @@ public class EditApptCommand extends Command{
     private final String newDate;
     private final String newTime;
 
-
+    /**
+     * creates an EditApptCommand to edit an existing appointment
+     * @param oldDoc
+     * @param oldDate
+     * @param oldTime
+     * @param newPat
+     * @param newDoc
+     * @param newDate
+     * @param newTime
+     */
     public EditApptCommand(String oldDoc, String oldDate,
                            String oldTime, String newPat, String newDoc, String newDate, String newTime) {
         this.oldDoc = oldDoc;
@@ -53,7 +67,7 @@ public class EditApptCommand extends Command{
     }
 
     @Override
-    public CommandResult execute(Model model) throws CommandException{
+    public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
 

@@ -1,12 +1,22 @@
 package seedu.address.logic.parser;
 
-import static seedu.address.logic.parser.CliSyntax.*;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DOCTOR;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TIME;
 
 import seedu.address.logic.commands.EditApptCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
+/**
+ * parses the input tp creat an EditApptCommand
+ */
 public class EditApptCommandParser {
-
+    /**
+     * Parses the given {@code String} of arguments in the context of the EditApptCommand
+     * and returns an EditApptCommand object for execution.
+     * @throws ParseException if the user input does not conform the expected format
+     */
     public EditApptCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
                 PREFIX_DATE, PREFIX_TIME, PREFIX_DOCTOR, PREFIX_NAME);

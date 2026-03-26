@@ -44,7 +44,7 @@ public class DeleteApptCommand extends Command {
         try {
             model.delAppt(toDel);
             return new CommandResult(MESSAGE_SUCCESS);
-        } catch(IOException e) {
+        } catch (IOException e) {
             return new CommandResult("Invalid input" + MESSAGE_USAGE);
         }
 

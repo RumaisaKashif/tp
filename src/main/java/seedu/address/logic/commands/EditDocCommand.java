@@ -7,12 +7,9 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.CollectionUtil;
@@ -26,7 +23,6 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-import seedu.address.model.tag.Tag;
 
 /**
  * Edits the details of an existing doctor in the app.
@@ -103,9 +99,8 @@ public class EditDocCommand extends Command {
         Phone updatedPhone = editDoctorDescriptor.getPhone().orElse(doctorToEdit.getPhone());
         Email updatedEmail = editDoctorDescriptor.getEmail().orElse(doctorToEdit.getEmail());
         Address updatedAddress = editDoctorDescriptor.getAddress().orElse(doctorToEdit.getAddress());
-        Set<Tag> updatedTags = editDoctorDescriptor.getTags().orElse(doctorToEdit.getTags());
 
-        return new Doctor(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
+        return new Doctor(updatedName, updatedPhone, updatedEmail, updatedAddress);
     }
 
     @Override
@@ -141,7 +136,6 @@ public class EditDocCommand extends Command {
         private Phone phone;
         private Email email;
         private Address address;
-        private Set<Tag> tags;
 
         public EditDoctorDescriptor() {}
 
@@ -154,14 +148,13 @@ public class EditDocCommand extends Command {
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
             setAddress(toCopy.address);
-            setTags(toCopy.tags);
         }
 
         /**
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, tags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, address);
         }
 
         public void setName(Name name) {
@@ -196,23 +189,6 @@ public class EditDocCommand extends Command {
             return Optional.ofNullable(address);
         }
 
-        /**
-         * Sets {@code tags} to this object's {@code tags}.
-         * A defensive copy of {@code tags} is used internally.
-         */
-        public void setTags(Set<Tag> tags) {
-            this.tags = (tags != null) ? new HashSet<>(tags) : null;
-        }
-
-        /**
-         * Returns an unmodifiable tag set, which throws {@code UnsupportedOperationException}
-         * if modification is attempted.
-         * Returns {@code Optional#empty()} if {@code tags} is null.
-         */
-        public Optional<Set<Tag>> getTags() {
-            return (tags != null) ? Optional.of(Collections.unmodifiableSet(tags)) : Optional.empty();
-        }
-
         @Override
         public boolean equals(Object other) {
             if (other == this) {
@@ -228,8 +204,7 @@ public class EditDocCommand extends Command {
             return Objects.equals(name, otherEditDoctorDescriptor.name)
                     && Objects.equals(phone, otherEditDoctorDescriptor.phone)
                     && Objects.equals(email, otherEditDoctorDescriptor.email)
-                    && Objects.equals(address, otherEditDoctorDescriptor.address)
-                    && Objects.equals(tags, otherEditDoctorDescriptor.tags);
+                    && Objects.equals(address, otherEditDoctorDescriptor.address);
         }
 
         @Override
@@ -239,7 +214,6 @@ public class EditDocCommand extends Command {
                     .add("phone", phone)
                     .add("email", email)
                     .add("address", address)
-                    .add("tags", tags)
                     .toString();
         }
     }

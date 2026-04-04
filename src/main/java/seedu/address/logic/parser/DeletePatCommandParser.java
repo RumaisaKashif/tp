@@ -15,7 +15,7 @@ public class DeletePatCommandParser implements Parser<DeletePatCommand> {
      */
     public DeletePatCommand parse(String args) throws ParseException {
         try {
-            Index index = ParserUtil.parseDelpatIndex(args);
+            Index index = ParserUtil.parseDelIndex(args);
             return new DeletePatCommand(index);
         } catch (ParseException pe) {
             throw pe;

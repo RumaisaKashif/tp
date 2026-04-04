@@ -141,19 +141,19 @@ public class ParserUtilTest {
     @Test
     public void parseDelpatIndex_validInput_success() throws Exception {
         // No whitespaces
-        assertEquals(INDEX_FIRST_PERSON, ParserUtil.parseDelpatIndex("1"));
+        assertEquals(INDEX_FIRST_PERSON, ParserUtil.parseDelIndex("1"));
 
         // Leading and trailing whitespaces
-        assertEquals(INDEX_FIRST_PERSON, ParserUtil.parseDelpatIndex("  1  "));
+        assertEquals(INDEX_FIRST_PERSON, ParserUtil.parseDelIndex("  1  "));
     }
 
     @Test
     public void parseDelpatIndex_invalidInput_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseDelpatIndex("10 a"));
+        assertThrows(ParseException.class, () -> ParserUtil.parseDelIndex("10 a"));
     }
 
     @Test
     public void parseDelpatIndex_negativeInput_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseDelpatIndex("-1"));
+        assertThrows(ParseException.class, () -> ParserUtil.parseDelIndex("-1"));
     }
 }

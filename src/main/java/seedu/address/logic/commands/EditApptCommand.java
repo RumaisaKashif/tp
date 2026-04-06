@@ -6,6 +6,11 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DOCTOR;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TIME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NEWDATE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NEWDOC;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NEWNAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NEWTIME;
+
 
 import java.io.IOException;
 
@@ -31,7 +36,7 @@ public class EditApptCommand extends Command {
             + "[" + PREFIX_TIME + "NEW_TIME]\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_DOCTOR + "Dr. Han " + PREFIX_DATE + "2023-10-10 " + PREFIX_TIME + "10:00 "
-            + PREFIX_TIME + "11:30";
+            + PREFIX_NEWTIME + "11:30";
 
     public static final String MESSAGE_SUCCESS = "Edited appointment!";
 

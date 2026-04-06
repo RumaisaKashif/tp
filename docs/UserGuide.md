@@ -10,12 +10,13 @@ CLInicDesk is a desktop application designed for **receptionists at small-scale 
 
 CLInicDesk is optimized for use through a Command Line Interface (CLI) while still providing the convenience of a Graphical User Interface (GUI). CLInicDesk enables receptionists who can type quickly to perform clinic management tasks such as adding patients, viewing doctor availabilties, and booking appointments faster than traditional systems.
 
+**Note:** This app is meant to be used with commands in English only.
 <!-- * Table of Contents -->
 <page-nav-print />
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Quick start
+## Setup Guidelines
 
 1. Ensure you have Java `17` or above installed in your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
@@ -291,16 +292,16 @@ Examples:
 
 Expected output:
 ```
-Edited Patient: John Doe; Phone: 91234567; Email: johndoe@example.com; Address: 123456; Tags: 
+Edited Patient: John Doe; Phone: 91234567; Email: johndoe@example.com; Address: 123456; Tags:
 ```
-## Editing an appointment : `editappt` 
-Edits the details of an existing appointment 
+## Editing an appointment : `editappt`
+Edits the details of an existing appointment
 Format : `editappt d/OLD_DOCTOR date/OLD_DATE time/OLD_TIME (n/NEW_NAME) (d/NEW_DOC) (date/NEW_DATE) (time/NEW_TIME)`
 
 **Notes**
 * Edits the appointment at the old date and time for the old doctor
-* The new fields in brackets are optional, but there must be at least one new field to edit. 
-e.g. `editappt d/Louis date/2026-03-28 time/09:00 time/10:00` is acceptable and will rebook the slot to 10am 
+* The new fields in brackets are optional, but there must be at least one new field to edit.
+e.g. `editappt d/Louis date/2026-03-28 time/09:00 time/10:00` is acceptable and will rebook the slot to 10am
 for the same patient,but `editappt d/Louis date/2026-03-28 time/09:00` is invalid on its own.
 
 Examples:
@@ -341,11 +342,6 @@ If your changes to the data file makes its format invalid, CLInicDesk will disca
 Furthermore, certain edits can cause the CLInicDesk to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 
 </box>
-
-### Archiving data files `[coming in v2.0]`
-
-_Details coming soon ..._
-
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ

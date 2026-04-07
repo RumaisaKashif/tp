@@ -6,8 +6,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,17 +70,14 @@ public class ScheduleManager {
                 mapper.writeValue(file, new HashMap<>());
             }
 
-            Map<String, Object> data = mapper.readValue(file, Map.class);
-
-            if (data.containsKey(doctorName)) {
-                return; // already exists
-            }
-
-            Map<String, Object> doctorSchedule = new HashMap<>();
             LocalDate today = LocalDate.now();
 
             Map<String, Object> data = readScheduleFile();
             rollScheduleForwardIfNeeded(data, today);
+
+            if (data.containsKey(doctorName)) {
+                return; // already exists
+            }
 
             if (findDoctorKey(data, doctorName) != null) {
                 return;
@@ -322,10 +319,6 @@ public class ScheduleManager {
         if (!file.exists() || file.length() == 0) {
             return null;
         }
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, Map<String, Map<String, String>>> data =
-                mapper.readValue(file, Map.class);
-
         Map<String, Object> data = readScheduleFile();
         String matchedDoctor = findDoctorKey(data, doctorName);
 

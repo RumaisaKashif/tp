@@ -1,10 +1,8 @@
 package seedu.address.model.person;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import seedu.address.model.appointment.Appointment;
-import seedu.address.model.tag.Tag;
 
 /**
  * Represents a patient in the address book.
@@ -21,8 +19,8 @@ public class Patient extends Person {
      * @param address
      * @param tags
      */
-    public Patient(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
-        super(name, phone, email, address, tags);
+    public Patient(Name name, Phone phone, Email email, Address address) {
+        super(name, phone, email, address);
         this.apptList = new ArrayList<>();
     }
 

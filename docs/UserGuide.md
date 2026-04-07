@@ -101,6 +101,11 @@ Adds a doctor to the app.
 
 Format: `adddoc n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS…​`
 
+Notes:
+* `NAME` is the name of the patient. It should not be blank. Only alphabets and spaces are allowed.
+* `PHONE_NUMBER` should only contain numbers.
+* `EMAIL` must match standard email format
+
 Examples:
 * `adddoc n/John Doe p/98765432 e/johnd@doctor.com a/John street, block 123, #01-01`
 * `adddoc n/Betsy Crowe e/betsycrowe@doctor.com a/Newgate Hospital p/1234567`
@@ -130,6 +135,26 @@ Examples:
 New patient added: John Doe; Phone: 98765432; Email: johnd@example.com; Address: John street, block 123, #01-01; Tags:
 ```
 
+### Editing a doctor: `editdoc`
+
+Edits an existing doctor in the app.
+
+Format: `editdoc INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS]`
+
+Notes:
+* Edits the doctor at the specified INDEX.
+* The index refers to the index number shown in the displayed list of doctor's and/or patients. The index must be a positive integer 1, 2, 3, …​
+* At least one of the following fields must be provided: name, phone, email, or address.
+* Existing values will be updated to the input values.
+
+Examples:
+* `editdoc 1 p/91234567 e/johnd@doctor.com`
+* `editdoc 2 n/Betsy Crower`
+
+Expected output:
+```
+Edited Doctor: John Doe; Phone: 91234567; Email: johnd@doctor.com; Address: 21 Bencoolen; Tags:
+```
 
 ### Listing all persons : `list`
 
@@ -179,6 +204,7 @@ Deletes the specified doctor from the app.
 
 Format: `deldoc INDEX`
 
+Notes:
 * Deletes the doctor at the specified `INDEX`.
 * The index refers to the index number shown in the displayed doctor list.
 * The index **must be a positive integer** 1, 2, 3, …​
@@ -213,7 +239,7 @@ Examples:
 
 Expected output:
 ```
-Deleted Patient: John Doe; Phone: 98765432; Email: johnd@example.com; Address: John street, block 123, #01-01; Tags: 
+Deleted Patient: John Doe; Phone: 98765432; Email: johnd@example.com; Address: John street, block 123, #01-01; Tags:
 ```
 
 ### Viewing a doctor's schedule : `viewsched`
@@ -350,6 +376,7 @@ Action     | Format, Examples
 **Edit Patient** | `editpat INDEX n/NAME p/PHONE e/EMAIL a/ADDRESS` <br> e.g., `editpat 2 n/James Ho p/22224444
 **Edit Appointment**|  `editappt d/OLD_DOCTOR date/OLD_DATE time/OLD_TIME (n/NEW_NAME) (d/NEW_DOC) (date/NEW_DATE) (time/NEW_TIME)` <br> e.g., `editappt d/Louis date/2026-03-28 time/09:00 d/Harvey time/10:00`p/22224444
 **Exit** | `exit`
+**Edit Doctor** | `editdoc INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS]`<br> e.g., `editdoc 1 p/91234567 e/johnd@doctor.com`
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List**   | `list`
 **View Schedule** | `viewsched d/DOCTOR_NAME [date/YYYY-MM-DD]`<br> e.g., `viewsched d/John Tan date/2026-03-20`

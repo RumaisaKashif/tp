@@ -4,12 +4,17 @@ package seedu.address.model.appointment;
  * Creates an Appointment object
  */
 public class Appointment {
+    /**
+     * Sentinel value for appointments that have not been persisted/assigned an ID yet.
+     * ID assignment is handled by {@code seedu.address.storage.AppointmentManager}.
+     */
+    public static final int UNASSIGNED_ID = -1;
+
     private String patientName;
     private String doctorName;
     private String date;
     private String time;
     private int apptID;
-    private static int count= 0;
 
     /**
      * Initialises an Appointment object with the doctorname, patient name, and the date and time
@@ -23,18 +28,24 @@ public class Appointment {
         this.patientName = patientName;
         this.date = date;
         this.time = time;
-        this.apptID = count;
-        count++;
+        this.apptID = UNASSIGNED_ID;
 
     }
 
+    /**
+     * initialises an appointment with the ID inputted by the user
+     * @param doctorName
+     * @param patientName
+     * @param date
+     * @param time
+     * @param apptID
+     */
     public Appointment(String doctorName, String patientName, String date, String time, int apptID) {
         this.doctorName = doctorName;
         this.patientName = patientName;
         this.date = date;
         this.time = time;
         this.apptID = apptID;
-        count = Math.max(count, apptID + 1);
     }
 
     public String getPatName() {
@@ -59,7 +70,6 @@ public class Appointment {
 
     public void setApptID(int apptID) {
         this.apptID = apptID;
-        count = Math.max(count, apptID + 1);
     }
 
     @Override

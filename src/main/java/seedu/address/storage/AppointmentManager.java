@@ -5,19 +5,29 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import seedu.address.model.appointment.Appointment;
 
+/**
+ * Manages the storage of Appointments in the appointments JSON file for easy editing of the schedule
+ */
 public class AppointmentManager {
     private static final String FILE_PATH = "data/appointments.json";
-    private static final ObjectMapper mapper = new ObjectMapper();
+    // Use field visibility so AppointmentData can stay as a private DTO without getters/setters.
+    private static final ObjectMapper mapper = new ObjectMapper()
+            .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
     static {
         initialise();
     }
 
+    /**
+     * Initialises the appointments JSON file
+     */
     public static void initialise() {
         try {
             File file = new File(FILE_PATH);
@@ -33,7 +43,13 @@ public class AppointmentManager {
         }
     }
 
-    public static synchronized int addAppointment(Appointment appt) throws IOException {
+    /**
+     * Adds appointment to the JSON file with the id and all the info
+     * @param appt
+     * @return
+     * @throws IOException
+     */
+    public static int addAppointment(Appointment appt) throws IOException {
         Map<String, AppointmentData> data = readAppointments();
         int nextId = data.keySet().stream()
                 .mapToInt(Integer::parseInt)
@@ -47,7 +63,13 @@ public class AppointmentManager {
         return nextId;
     }
 
-    public static synchronized Appointment getAppointmentById(int apptId) throws IOException {
+    /**
+     * Retrieves the appointment info using its id number
+     * @param apptId
+     * @return
+     * @throws IOException
+     */
+    public static Appointment getAppointmentById(int apptId) throws IOException {
         Map<String, AppointmentData> data = readAppointments();
         AppointmentData record = data.get(String.valueOf(apptId));
         if (record == null) {
@@ -57,7 +79,13 @@ public class AppointmentManager {
         return new Appointment(record.doctorName, record.patientName, record.date, record.time, apptId);
     }
 
-    public static synchronized void updateAppointment(int apptId, Appointment appt) throws IOException {
+    /**
+     * updates appointment by retrieving th eappointment by ID, then updating its info
+     * @param apptId
+     * @param appt
+     * @throws IOException
+     */
+    public static void updateAppointment(int apptId, Appointment appt) throws IOException {
         Map<String, AppointmentData> data = readAppointments();
         String key = String.valueOf(apptId);
         if (!data.containsKey(key)) {
@@ -68,7 +96,12 @@ public class AppointmentManager {
         writeAppointments(data);
     }
 
-    public static synchronized void deleteAppointment(int apptId) throws IOException {
+    /**
+     * deletes the appointment from the JSON file
+     * @param apptId
+     * @throws IOException
+     */
+    public static void deleteAppointment(int apptId) throws IOException {
         Map<String, AppointmentData> data = readAppointments();
         if (data.remove(String.valueOf(apptId)) == null) {
             throw new IOException("Appointment id not found: " + apptId);
@@ -96,10 +129,10 @@ public class AppointmentManager {
     }
 
     private static final class AppointmentData {
-        public String doctorName;
-        public String patientName;
-        public String date;
-        public String time;
+        private String doctorName;
+        private String patientName;
+        private String date;
+        private String time;
 
         public AppointmentData() {}
 

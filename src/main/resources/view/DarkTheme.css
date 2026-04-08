@@ -333,8 +333,16 @@
 
 /* Time labels */
 .time-label {
-    -fx-text-fill: #cccccc;
+    /* Contrast with .schedule-root background (#cccccc). */
+    -fx-text-fill: #333333;
     -fx-font-size: 11px;
+}
+
+/* Date headers (used by SchedulePanel weekly view). */
+.date-label {
+    -fx-text-fill: #333333;
+    -fx-font-size: 11px;
+    -fx-font-family: "Segoe UI Semibold";
 }
 
 /* Available slot */

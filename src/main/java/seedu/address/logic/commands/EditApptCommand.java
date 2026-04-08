@@ -8,6 +8,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NEWNAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NEWTIME;
 
 import java.io.IOException;
+import java.time.format.DateTimeParseException;
 
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
@@ -72,6 +73,9 @@ public class EditApptCommand extends Command {
             AppointmentManager.updateAppointment(apptId, editedAppt);
             return new CommandResult(MESSAGE_SUCCESS);
         } catch (IOException e) {
+            throw new CommandException("Could not edit appointment: " + e.getMessage());
+        } catch (DateTimeParseException | IllegalArgumentException e) {
+            // Convert parsing/validation runtime errors into a user-visible message.
             throw new CommandException("Could not edit appointment: " + e.getMessage());
         }
     }

@@ -6,8 +6,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +24,8 @@ public class ScheduleManager {
 
     private static final String FILE_PATH = "data/schedule.json";
     private static final String LAST_UPDATED_KEY = "__lastUpdated";
+    private static final DateTimeFormatter INPUT_TIME_FORMAT = DateTimeFormatter.ofPattern("H:mm");
+    private static final DateTimeFormatter STORAGE_TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm");
 
     /**
      * Retrieves the schedule for a given doctor and date, ignoring case sensitivity of the doctor's name.
@@ -166,7 +168,6 @@ public class ScheduleManager {
         String patName = appt.getPatName();
         String date = appt.getDate();
         String time = appt.getTime();
-        boolean found = false;
 
         if (!isValidDate(date)) {
             throw new IOException("Please input a valid date. The date must be formatted as YYYY-MM-DD");
@@ -181,7 +182,7 @@ public class ScheduleManager {
         }
 
         if (!isValidTime(time)) {
-            throw new IOException("Please input a valid time. Time must be formatted as HH:MM");
+            throw new IOException("Please input a valid time. Time must be formatted as H:MM (e.g. 9:00 or 09:00)");
         }
 
         ObjectMapper mapper = new ObjectMapper();
@@ -198,7 +199,8 @@ public class ScheduleManager {
             Map<String, String> slots = doctorSchedule.get(date);
             TreeMap<String, Object> sortedSlots = new TreeMap<>(slots);
 
-            LocalTime apptTime = LocalTime.parse(time);
+            String standardizedTime = toStandardizedTime(time);
+            LocalTime apptTime = LocalTime.parse(standardizedTime, STORAGE_TIME_FORMAT);
             LocalTime firstTime = LocalTime.parse(sortedSlots.firstKey());
             LocalTime lastTime = LocalTime.parse(sortedSlots.lastKey());
 
@@ -206,18 +208,12 @@ public class ScheduleManager {
                 throw new IOException("Please choose a time within operating hours");
             }
 
-            //Formats the input into the ormat of json keys, to prevent dummy entries/overwrites
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-            LocalTime parsedTime = LocalTime.parse(time, formatter);
-            String standardizedTime = parsedTime.format(formatter);
-
             if (!slots.containsKey(standardizedTime)) {
                 throw new IOException("The time " + time + " is not a valid 30-minute slot for this doctor.");
             }
 
             if (slots.get(standardizedTime) == null) {
                 slots.put(standardizedTime, patName);
-                found = true;
                 mapper.writerWithDefaultPrettyPrinter().writeValue(file, data);
             } else {
                 throw new IOException("This slot is already booked. "
@@ -254,11 +250,15 @@ public class ScheduleManager {
      */
     private static boolean isValidTime(String time) {
         try {
-            LocalTime formattedDate = LocalTime.parse(time);
+            LocalTime.parse(time, INPUT_TIME_FORMAT);
             return true;
         } catch (DateTimeParseException e) {
             return false;
         }
+    }
+
+    private static String toStandardizedTime(String time) {
+        return LocalTime.parse(time, INPUT_TIME_FORMAT).format(STORAGE_TIME_FORMAT);
     }
 
     /**

@@ -49,18 +49,23 @@ public class AddApptCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        boolean addedToStore = false;
         try {
-            AppointmentManager.addAppointment(toAdd);
-            addedToStore = true;
             model.addAppt(toAdd);
+            AppointmentManager.addAppointment(toAdd);
         } catch (IOException e) {
-            if (addedToStore) {
-                try {
+            // Best-effort rollback if one of the two persistence steps fails.
+            try {
+                if (toAdd.getApptID() != Appointment.UNASSIGNED_ID) {
                     AppointmentManager.deleteAppointment(toAdd.getApptID());
-                } catch (IOException ignored) {
-                    // Best-effort cleanup if schedule add fails after persistence.
                 }
+            } catch (IOException ignored) {
+                // Ignore rollback failure.
+            }
+
+            try {
+                model.delAppt(toAdd);
+            } catch (IOException ignored) {
+                // Ignore rollback failure.
             }
             throw new CommandException(e.getMessage());
         }

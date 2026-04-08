@@ -36,8 +36,11 @@ public class AddApptCommandTest {
     @BeforeEach
     public void setup() throws Exception {
         date = LocalDate.now().plusDays(1);
-        writeScheduleWithSlots(DOCTOR_NAME, date.toString(),
-                Map.of("09:00", null, "09:30", null, "10:00", null));
+        Map<String, String> slots = new LinkedHashMap<>();
+        slots.put("09:00", null);
+        slots.put("09:30", null);
+        slots.put("10:00", null);
+        writeScheduleWithSlots(DOCTOR_NAME, date.toString(), slots);
         writeEmptyAppointments();
     }
 

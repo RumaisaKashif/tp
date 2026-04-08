@@ -6,6 +6,11 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NEWDOC;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NEWNAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NEWTIME;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 import seedu.address.logic.commands.EditApptCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -13,6 +18,8 @@ import seedu.address.logic.parser.exceptions.ParseException;
  * parses the input tp creat an EditApptCommand
  */
 public class EditApptCommandParser {
+    private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("H:mm");
+
     /**
      * Parses the given {@code String} of arguments in the context of the EditApptCommand
      * and returns an EditApptCommand object for execution.
@@ -40,10 +47,37 @@ public class EditApptCommandParser {
             throw new ParseException("Appointment id must be a non-negative integer.");
         }
 
-        String newDoc = argMultimap.getValue(PREFIX_NEWDOC).orElse(null);
-        String newDate = argMultimap.getValue(PREFIX_NEWDATE).orElse(null);
-        String newTime = argMultimap.getValue(PREFIX_NEWTIME).orElse(null);
-        String newPat = argMultimap.getValue(PREFIX_NEWNAME).orElse(null);
+        String newDoc = argMultimap.getValue(PREFIX_NEWDOC).map(String::trim).orElse(null);
+        String newDate = argMultimap.getValue(PREFIX_NEWDATE).map(String::trim).orElse(null);
+        String newTime = argMultimap.getValue(PREFIX_NEWTIME).map(String::trim).orElse(null);
+        String newPat = argMultimap.getValue(PREFIX_NEWNAME).map(String::trim).orElse(null);
+
+        if ("".equals(newDoc)) {
+            throw new ParseException("Doctor name cannot be empty.");
+        }
+        if ("".equals(newPat)) {
+            throw new ParseException("Patient name cannot be empty.");
+        }
+
+        if (newDate != null) {
+            try {
+                LocalDate.parse(newDate);
+            } catch (DateTimeParseException e) {
+                throw new ParseException("Please input a valid date. The date must be formatted as YYYY-MM-DD");
+            }
+        }
+
+        if (newTime != null) {
+            try {
+                LocalTime parsed = LocalTime.parse(newTime, TIME_FORMAT);
+                if (parsed.getMinute() % 30 != 0) {
+                    throw new ParseException("Please choose a valid timeslot.");
+                }
+            } catch (DateTimeParseException e) {
+                throw new ParseException("Please input a valid time. Time must be formatted as H:MM "
+                        + "(e.g. 9:00 or 09:00)");
+            }
+        }
 
         return new EditApptCommand(apptId, newPat, newDoc, newDate, newTime);
     }

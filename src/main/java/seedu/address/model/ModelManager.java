@@ -218,7 +218,6 @@ public class ModelManager implements Model {
                 .orElseThrow(() -> new IOException("Patient not found: " + appt.getPatName()));
 
         patient.addAppt(appt);
-        System.out.println("Model manager appt added to patient");
         ScheduleManager.addAppt(appt);
 
     }

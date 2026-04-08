@@ -53,27 +53,23 @@ public class ScheduleManager {
     /**
      * Adds a new doctor to the schedule with default time slots for the next 7 days.
      */
-    public static void addDoctorSchedule(String doctorName) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            File file = new File(FILE_PATH);
-            file.getParentFile().mkdirs();
-            LocalDate today = LocalDate.now();
+    public static void addDoctorSchedule(String doctorName) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        File file = new File(FILE_PATH);
+        file.getParentFile().mkdirs();
+        LocalDate today = LocalDate.now();
 
-            Map<String, Object> data = readScheduleFile();
-            rollScheduleForwardIfNeeded(data, today);
+        Map<String, Object> data = readScheduleFile();
+        rollScheduleForwardIfNeeded(data, today);
 
-            if (findDoctorKey(data, doctorName) != null) {
-                return;
-            }
-
-            data.put(doctorName, createDoctorSchedule(today));
-            data.put(LAST_UPDATED_KEY, today.toString());
-
-            mapper.writerWithDefaultPrettyPrinter().writeValue(file, data);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (findDoctorKey(data, doctorName) != null) {
+            return;
         }
+
+        data.put(doctorName, createDoctorSchedule(today));
+        data.put(LAST_UPDATED_KEY, today.toString());
+
+        mapper.writerWithDefaultPrettyPrinter().writeValue(file, data);
     }
 
     /**
@@ -142,8 +138,9 @@ public class ScheduleManager {
     }
 
     /**
-     * books an appointment for the specific doctor
-     * @param appt
+     * Books an appointment for the specified doctor.
+     *
+     * @param appt the appointment to add.
      */
     public static void addAppt(Appointment appt) throws IOException {
         String doctorName = appt.getDocName();
@@ -166,13 +163,12 @@ public class ScheduleManager {
             slots.put(time, patName);
             mapper.writerWithDefaultPrettyPrinter().writeValue(file, data);
         }
-
-        System.out.println("sched added appt");
     }
 
     /**
-     * deletes an appointment according to the time and date from a doctor's schedule
-     * @param appt
+     * Deletes an appointment from a doctor's schedule at the given date and time.
+     *
+     * @param appt the appointment to delete.
      */
     public static void delAppt(Appointment appt) {
         String doctorName = appt.getDocName();

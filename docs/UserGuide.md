@@ -158,14 +158,13 @@ Examples:
 ### Deleting an appointment : `delappt`
 Deletes an appointment on a specific date, at a specific time to a doctor's schedule.
 
-Format: `delappt d/DOCTORNAME n/PATIENTNAME date/YYYY-MM-DD time/HH:MM`
+Format: `delappt id/ID`
 
-* Deletes the appointment in the relevant doctor's schedule at the specified date and time
-* Date must not fall beyond the 7 day range(counted from today's date)
-* Time must fall within operating hours(9am to 5pm)
+* Deletes the appointment in the relevant doctor's schedule at the specified date and time by finding the appointment using appointment ID
+* Appointment ID must be a valid non zero integer 
 
 Examples:
-* If the 9am slot for Dr John Tan on 2026-03-21 was booked, then `delappt d/John Tan n/Jane date/2026-03-21 time/09:00`
+* If the 9am slot for Dr John Tan on 2026-03-21 was booked with the appointment ID = 3, then `delappt id/3`
   followed by `viewsched d/John Tan date/2026-03-21` command will show the 9am slot as `Available`.
 
 Expected output:

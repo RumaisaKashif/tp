@@ -183,14 +183,13 @@ Examples:
 ### Deleting an appointment : `delappt`
 Deletes an appointment on a specific date, at a specific time to a doctor's schedule.
 
-Format: `delappt d/DOCTORNAME n/PATIENTNAME date/YYYY-MM-DD time/HH:MM`
+Format: `delappt id/ID`
 
-* Deletes the appointment in the relevant doctor's schedule at the specified date and time
-* Date must not fall beyond the 7 day range(counted from today's date)
-* Time must fall within operating hours(9am to 5pm)
+* Deletes the appointment in the relevant doctor's schedule at the specified date and time by finding the appointment using appointment ID
+* Appointment ID must be a valid non zero integer 
 
 Examples:
-* If the 9am slot for Dr John Tan on 2026-03-21 was booked, then `delappt d/John Tan n/Jane date/2026-03-21 time/09:00`
+* If the 9am slot for Dr John Tan on 2026-03-21 was booked with the appointment ID = 3, then `delappt id/3`
   followed by `viewsched d/John Tan date/2026-03-21` command will show the 9am slot as `Available`.
 
 Expected output:
@@ -298,13 +297,16 @@ Edits the details of an existing appointment
 Format : `editappt d/OLD_DOCTOR date/OLD_DATE time/OLD_TIME (n/NEW_NAME) (d/NEW_DOC) (date/NEW_DATE) (time/NEW_TIME)`
 
 **Notes**
-* Edits the appointment at the old date and time for the old doctor
-* The new fields in brackets are optional, but there must be at least one new field to edit. 
-e.g. `editappt d/Louis date/2026-03-28 time/09:00 time/10:00` is acceptable and will rebook the slot to 10am 
-for the same patient,but `editappt d/Louis date/2026-03-28 time/09:00` is invalid on its own.
+* Edits the appointment at the old date and time for the old doctor by appointment ID
+* The ID must be a valid(positive) nonzero integer.
+* The new fields are `ntime`, `ndate` and `nd`.The fields are optional, but there must be at least one new field to edit. 
+e.g. `editappt id/3 ntime/10:00` is acceptable and will rebook the slot to 10am 
+for the same patient,but `editappt id/3` is invalid on its own.
+* An appointment cannot be edited to have a new patient(i.e the patient needs to be changed). To do so, user must delete
+the new appointment and make a new appointment for the new patient.
 
 Examples:
-* `editappt d/Louis date/2026-03-28 time/09:00 d/Harvey time/10:00` edits the appointment to be with Dr Harvey instead of Dr Louis at 10am on the same date
+* `editappt id/3 nd/Harvey ntime/10:00` edits the appointment to be with Dr Harvey instead of Dr Louis at 10am on the same date
 
 ### Clearing all entries : `clear`
 

@@ -126,17 +126,20 @@ public interface Model {
     void addPerson(Person person);
 
     /**
-     * Adds the given appointment
-     * @param appt
+     * Adds the given appointment.
+     *
+     * @param appt the appointment to add.
      */
     void addAppt(Appointment appt) throws IOException;
 
     /**
-     * deletes the given appointment
-     * @param appt
+     * Deletes the given appointment.
+     *
+     * @param appt the appointment to delete.
      */
     void delAppt(Appointment appt) throws IOException;
 
+    // Comment phrased by Copilot
     /**
      * Edits the given appointment to alter the info.
      * @param oldAppt
@@ -145,6 +148,12 @@ public interface Model {
      * @param newTime
      * @return the edited appointment
      * @throws IOException
+     * Edits the given appointment with the new details provided.
+     *
+     *
+     * @param newDoc the new doctor name, or null to keep the existing one.
+     * @param newDate the new date, or null to keep the existing one.
+     * @param newTime the new time, or null to keep the existing one.
      */
     Appointment editAppt(Appointment oldAppt, String newDoc, String newDate, String newTime) throws IOException;
 

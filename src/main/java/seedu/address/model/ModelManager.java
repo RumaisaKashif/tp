@@ -195,14 +195,16 @@ public class ModelManager implements Model {
         try {
             deletePatientByAppt(patient);
         } catch (IOException e) {
-            logger.warning("Failed to delete patient's appointments from schedule: " + e.getMessage());
+            logger.warning("Failed to delete patient's appointments: " + e.getMessage());
         }
-
     }
 
+    /**
+     * Helper function to find a patient and remove all their appointments from the schedule.
+     */
     private void deletePatientByAppt(Patient patient) throws IOException {
         for (Appointment appt : patient.getApptList()) {
-            ScheduleManager.delAppt(appt);
+            ScheduleManager.removeApptIfExists(appt);
         }
     }
 

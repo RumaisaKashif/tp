@@ -33,6 +33,7 @@ public class DeleteDocCommand extends Command {
      * Creates a DeleteDocCommand to delete the doctor at the specified {@code targetIndex}.
      */
     public DeleteDocCommand(Index targetIndex) {
+        requireNonNull(targetIndex);
         this.targetIndex = targetIndex;
     }
 

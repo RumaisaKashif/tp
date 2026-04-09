@@ -109,6 +109,7 @@ How the `Logic` component works:
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
 
+
 <puml src="diagrams/ParserClasses.puml" width="600"/>
 
 How the parsing works:

@@ -350,6 +350,9 @@ Shows a list of all persons (doctors and patients) in the app.
 
 Format: `list`
 
+**Notes:**
+* Any invalid or extra parameters added after the command will be ignored, and the `list` command will still work as intended. e.g. `list 3`, `list bla bla` will work.
+
 #### Locating persons by name: `find`
 
 Finds persons whose names contain any of the given keywords.

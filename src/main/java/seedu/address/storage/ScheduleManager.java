@@ -367,13 +367,20 @@ public class ScheduleManager {
      */
     public static void removeApptIfExists(Appointment appt) {
         try {
-            String doctorName = appt.getDocName();
             String pat = appt.getPatName();
             String date = appt.getDate();
             String time = appt.getTime();
 
             Map<String, Object> data = readScheduleFile();
-            String matchedDoctor = findDoctorKey(data, doctorName);
+
+            // Prefer ID-based lookup but fallback to name-based lookup for safety
+            String matchedDoctor = null;
+            if (appt.getDocId() != Appointment.UNASSIGNED_ID) {
+                matchedDoctor = findDoctorKeyByDocId(data, appt.getDocId());
+            }
+            if (matchedDoctor == null && appt.getDocName() != null) {
+                matchedDoctor = findDoctorKey(data, appt.getDocName());
+            }
 
             if (matchedDoctor == null) {
                 return;

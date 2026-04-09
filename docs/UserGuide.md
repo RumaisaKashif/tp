@@ -72,23 +72,24 @@ The table below summarises the rules and constraints for all input fields used a
 
 <table class="constraints-table">
 <tr><th>Field</th><th>Constraints</th></tr>
-<tr><td><strong>NAME</strong></td><td>Alphanumeric characters and spaces only. Case-insensitive for matching (e.g. <code>john doe</code> matches <code>John Doe</code>). Must not be blank.</td></tr>
-<tr><td><strong>PHONE_NUMBER</strong></td><td>Numeric digits only. Must be at least 3 digits long.</td></tr>
+<tr><td><strong>NAME</strong></td><td>Letters only (including apostrophes and hyphens between words, e.g. <code>O'Brien</code>, <code>Mary-Jane</code>). Case-insensitive for matching (e.g. <code>john doe</code> matches <code>John Doe</code>). Must not be blank.</td></tr>
+<tr><td><strong>PHONE_NUMBER</strong></td><td>Numeric digits only. Must be exactly 8 digits long.</td></tr>
 <tr><td><strong>EMAIL</strong></td><td>Must follow the standard <code>local-part@domain</code> format (e.g. <code>name@example.com</code>).</td></tr>
 <tr><td><strong>ADDRESS</strong></td><td>Any non-blank string.</td></tr>
 <tr><td><strong>INDEX</strong></td><td>A positive integer (1, 2, 3, …) referring to the position in the currently displayed list.</td></tr>
+<tr><td><strong>DOCTOR_ID / PATIENT_ID</strong></td><td>The numeric ID shown on each person's card in the displayed list. Must be a positive integer.</td></tr>
+<tr><td><strong>APPOINTMENT_ID</strong></td><td>The numeric ID returned when an appointment is created via <code>addappt</code>. Must be a non-negative integer.</td></tr>
 <tr><td><strong>DATE</strong> (<code>YYYY-MM-DD</code>)</td><td>Must be in strict ISO 8601 format (e.g. <code>2026-04-10</code>). Must be today or within the next 7 days.</td></tr>
 <tr><td><strong>TIME</strong> (<code>HH:MM</code>)</td><td>Must be one of the half-hourly slots from <code>09:00</code> to <code>16:30</code> (i.e. <code>09:00</code>, <code>09:30</code>, <code>10:00</code>, … <code>16:30</code>).</td></tr>
-<tr><td><strong>DOCTOR_NAME</strong></td><td>Must exactly match an existing doctor's name (case-insensitive).</td></tr>
-<tr><td><strong>PATIENT_NAME</strong></td><td>Must exactly match an existing patient's name (case-insensitive).</td></tr>
+<tr><td><strong>DOCTOR_NAME</strong></td><td>Must exactly match an existing doctor's name (case-insensitive). Used with <code>viewsched</code>.</td></tr>
 </table>
 
 <box type="info" seamless>
 
 **Additional assumptions:**
-* **Doctor duplicate detection:** Two doctors are considered duplicates if they share the same name (case-insensitive) **and** either the same phone number or the same email.
+* **Duplicate detection:** Two doctors (or two patients) are considered duplicates if they share the same name (case-insensitive) **and** either the same phone number or the same email.
 * **Schedule window:** Doctor schedules are displayed and bookable for a rolling 7-day window from today.
-* **Doctor IDs:** Each doctor is automatically assigned a unique, persistent ID that is preserved across edits. IDs are not user-editable.
+* **Doctor / Patient IDs:** Each doctor and patient is automatically assigned a unique, persistent ID that is preserved across edits. IDs are not user-editable.
 
 </box>
 
@@ -105,13 +106,13 @@ Adds a doctor to the app.
 Format: `adddoc n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS`
 
 **Notes:**
-* `NAME` is the name of the doctor. It should not be blank. Only alphabets and spaces are allowed.
-* `PHONE_NUMBER` should only contain numbers and be at least 3 digits.
+* `NAME` is the name of the doctor. It should not be blank. Only letters, apostrophes, and hyphens are allowed.
+* `PHONE_NUMBER` should only contain numbers and be exactly 8 digits.
 * `EMAIL` must match the standard email format (e.g. `name@example.com`).
 
 Examples:
 * `adddoc n/John Doe p/98765432 e/johnd@doctor.com a/John street, block 123, #01-01`
-* `adddoc n/Betsy Crowe e/betsycrowe@doctor.com a/Newgate Hospital p/1234567`
+* `adddoc n/Betsy Crowe e/betsycrowe@doctor.com a/Newgate Hospital p/12345678`
 
 Expected output:
 ```
@@ -171,13 +172,13 @@ Adds a patient to the app.
 Format: `addpat n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS`
 
 **Notes:**
-* `NAME` is the name of the patient. It should not be blank. Only alphabets and spaces are allowed.
-* `PHONE_NUMBER` should only contain numbers and be at least 3 digits.
+* `NAME` is the name of the patient. It should not be blank. Only letters, apostrophes, and hyphens are allowed.
+* `PHONE_NUMBER` should only contain numbers and be exactly 8 digits.
 * `EMAIL` must match the standard email format (e.g. `name@example.com`).
 
 Examples:
 * `addpat n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `addpat n/Betsy Crowe e/betsycrowe@example.com a/Newgate Hospital p/1234567`
+* `addpat n/Betsy Crowe e/betsycrowe@example.com a/Newgate Hospital p/12345678`
 
 Expected output:
 ```
@@ -260,53 +261,52 @@ Schedule for John Tan on 2026-04-10
 
 Adds an appointment on a specific date, at a specific time in a doctor's schedule.
 
-Format: `addappt d/DOCTOR_NAME n/PATIENT_NAME date/YYYY-MM-DD time/HH:MM`
+Format: `addappt id/DOCTOR_ID pid/PATIENT_ID date/YYYY-MM-DD time/HH:MM`
 
 **Notes:**
 * Books an appointment in the relevant doctor's schedule at the specified date and time.
+* `DOCTOR_ID` and `PATIENT_ID` are the numeric IDs shown on the person cards in the displayed list.
 * Date must be within the next 7 days (counted from today's date).
 * Time must fall within operating hours (09:00 to 16:30), in 30-minute intervals.
 
 Examples:
-* `addappt d/John Tan n/Jane date/2026-04-10 time/09:00` books an appointment for Jane in Dr John Tan's schedule on 2026-04-10 at 9am. A subsequent `viewsched d/John Tan date/2026-04-10` command will show the 9am slot as `Booked`.
+* `addappt id/1 pid/3 date/2026-04-10 time/09:00` books an appointment for Patient 3 in Doctor 1's schedule on 2026-04-10 at 9am.
 
 Expected output:
 ```
-New appointment added!
+New appointment added! ID: 0
 ```
 
 #### Editing an appointment : `editappt`
 
 Edits the details of an existing appointment.
 
-Format: `editappt d/OLD_DOCTOR date/OLD_DATE time/OLD_TIME [n/NEW_NAME] [d/NEW_DOC] [date/NEW_DATE] [time/NEW_TIME]`
+Format: `editappt apptid/APPOINTMENT_ID [nd/NEW_DOCTOR_ID] [ndate/NEW_DATE] [ntime/NEW_TIME]`
 
 **Notes:**
-* Edits the appointment at the old date and time for the old doctor.
+* Identifies the appointment by its `APPOINTMENT_ID` (shown when the appointment was created).
 * The new fields in square brackets are optional, but at least one new field must be provided.
-  e.g. `editappt d/Louis date/2026-04-10 time/09:00 time/10:00` is acceptable and will rebook the slot to 10:00 for the same patient, but `editappt d/Louis date/2026-04-10 time/09:00` is invalid on its own.
+* Editing the patient on an existing appointment is not supported. Delete the appointment and add a new one instead.
 
 Examples:
-* `editappt d/Louis date/2026-04-10 time/09:00 d/Harvey time/10:00` edits the appointment to be with Dr Harvey instead of Dr Louis at 10am on the same date.
+* `editappt apptid/0 nd/2 ntime/10:00` changes appointment 0 to Doctor 2 at 10:00.
 
 Expected output:
 ```
-Appointment edited!
+Edited appointment!
 ```
 
 #### Deleting an appointment : `delappt`
 
-Deletes an appointment on a specific date, at a specific time from a doctor's schedule.
+Deletes an appointment identified by its appointment ID.
 
-Format: `delappt d/DOCTOR_NAME n/PATIENT_NAME date/YYYY-MM-DD time/HH:MM`
+Format: `delappt apptid/APPOINTMENT_ID`
 
 **Notes:**
-* Deletes the appointment in the relevant doctor's schedule at the specified date and time.
-* Date must be within the next 7 days (counted from today's date).
-* Time must fall within operating hours (09:00 to 16:30), in 30-minute intervals.
+* Deletes the appointment identified by its `APPOINTMENT_ID` (shown when the appointment was created).
 
 Examples:
-* If the 9am slot for Dr John Tan on 2026-04-10 was booked, then `delappt d/John Tan n/Jane date/2026-04-10 time/09:00` followed by `viewsched d/John Tan date/2026-04-10` will show the 9am slot as `Available`.
+* `delappt apptid/0` deletes the appointment with ID 0.
 
 Expected output:
 ```
@@ -361,7 +361,7 @@ Examples:
 
 #### Clearing all entries : `clear`
 
-Clears all entries from the app UI temporarily. This does not delete data.
+Clears all entries from the app display temporarily. Use `list` to show all entries again. This does not delete data.
 
 Format: `clear`
 
@@ -452,15 +452,15 @@ Furthermore, certain edits can cause CLInicDesk to behave in unexpected ways (e.
 </tr>
 <tr>
   <td><strong>Add Appointment</strong></td>
-  <td><code>addappt d/DOCTOR_NAME n/PATIENT_NAME date/YYYY-MM-DD time/HH:MM</code><br>e.g., <code>addappt d/James Ho n/Jane Tan date/2026-04-10 time/09:00</code></td>
+  <td><code>addappt id/DOCTOR_ID pid/PATIENT_ID date/YYYY-MM-DD time/HH:MM</code><br>e.g., <code>addappt id/1 pid/3 date/2026-04-10 time/09:00</code></td>
 </tr>
 <tr>
   <td><strong>Edit Appointment</strong></td>
-  <td><code>editappt d/OLD_DOCTOR date/OLD_DATE time/OLD_TIME [n/NEW_NAME] [d/NEW_DOC] [date/NEW_DATE] [time/NEW_TIME]</code><br>e.g., <code>editappt d/Louis date/2026-04-10 time/09:00 d/Harvey time/10:00</code></td>
+  <td><code>editappt apptid/APPOINTMENT_ID [nd/NEW_DOCTOR_ID] [ndate/NEW_DATE] [ntime/NEW_TIME]</code><br>e.g., <code>editappt apptid/0 nd/2 ntime/10:00</code></td>
 </tr>
 <tr>
   <td><strong>Delete Appointment</strong></td>
-  <td><code>delappt d/DOCTOR_NAME n/PATIENT_NAME date/YYYY-MM-DD time/HH:MM</code><br>e.g., <code>delappt d/James Ho n/Jane Tan date/2026-04-10 time/09:00</code></td>
+  <td><code>delappt apptid/APPOINTMENT_ID</code><br>e.g., <code>delappt apptid/0</code></td>
 </tr>
 <tr class="cat-divider">
   <td class="cat-general" rowspan="5">General</td>

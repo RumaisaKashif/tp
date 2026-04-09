@@ -321,13 +321,13 @@ Edited Patient: John Doe; Phone: 91234567; Email: johndoe@example.com; Address: 
 ```
 ## Editing an appointment : `editappt`
 Edits the details of an existing appointment
-Format : `editappt d/OLD_DOCTOR date/OLD_DATE time/OLD_TIME (n/NEW_NAME) (d/NEW_DOC) (date/NEW_DATE) (time/NEW_TIME)`
+Format : `editappt apptid/APPT_ID (nd/NEW_DOC) (ndate/NEW_DATE) (ntime/NEW_TIME)`
 
 **Notes**
 * Edits the appointment at the old date and time for the old doctor
 * The new fields in brackets are optional, but there must be at least one new field to edit.
-e.g. `editappt d/Louis date/2026-03-28 time/09:00 time/10:00` is acceptable and will rebook the slot to 10am
-for the same patient,but `editappt d/Louis date/2026-03-28 time/09:00` is invalid on its own.
+e.g. `editappt apptid/ID ntime/10:00` is acceptable and will rebook the slot to 10am
+for the same patient,but `editappt apptid/ID` is invalid on its own.
 
 ### Listing all persons : `list`
 

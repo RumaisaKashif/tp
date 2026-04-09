@@ -13,7 +13,7 @@ public class EditApptCommandParserTest {
 
     @Test
     public void parse_validArgs_success() throws Exception {
-        assertTrue(parser.parse(" apptid/3 ntime/10:00 nd/2 ndate/2026-04-10") instanceof EditApptCommand);
+        assertTrue(parser.parse(" apptid/3 ntime/10:00 nid/2 ndate/2026-04-10") instanceof EditApptCommand);
     }
 
     @Test

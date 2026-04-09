@@ -312,7 +312,8 @@ public class ModelManager implements Model {
             patient.delAppt(appt);
         }
     }
-// method debugged by copilot
+
+    // method debugged by copilot
     @Override
     public Appointment editAppt(Appointment oldAppt, String newDoc, String newDate, String newTime) throws IOException {
         Appointment resolvedOldAppt =
@@ -539,7 +540,7 @@ public class ModelManager implements Model {
     private void updateDoctorAppointmentsInStorage(Doctor oldDoctor, Doctor newDoctor) throws IOException {
         String oldName = oldDoctor.getName().fullName;
         String newName = newDoctor.getName().fullName;
-        
+
         if (!oldName.equals(newName)) {
             seedu.address.storage.AppointmentManager.updateDoctorNameInAppointments(oldName, newName);
         }
@@ -551,9 +552,21 @@ public class ModelManager implements Model {
     private void updatePatientAppointmentsInStorage(Patient oldPatient, Patient newPatient) throws IOException {
         String oldName = oldPatient.getName().fullName;
         String newName = newPatient.getName().fullName;
-        
+
         if (!oldName.equals(newName)) {
             seedu.address.storage.AppointmentManager.updatePatientNameInAppointments(oldName, newName);
+        }
+    }
+
+    /**
+     * Updates all patient name entries in the schedule when the patient's details change.
+     */
+    private void updatePatientInSchedule(Patient oldPatient, Patient newPatient) throws IOException {
+        String oldName = oldPatient.getName().fullName;
+        String newName = newPatient.getName().fullName;
+
+        if (!oldName.equals(newName)) {
+            ScheduleManager.updatePatientNameInSchedule(oldName, newName);
         }
     }
 
@@ -570,7 +583,7 @@ public class ModelManager implements Model {
 
         doctors.setDoctor(target, editedDoctor);
         addressBook.setPerson(target, editedDoctor);
-        
+
         try {
             updateDoctorAppointmentsInStorage(target, editedDoctor);
         } catch (IOException e) {
@@ -584,11 +597,12 @@ public class ModelManager implements Model {
 
         patients.setPatient(target, editedPatient);
         addressBook.setPerson(target, editedPatient);
-        
+
         try {
             updatePatientAppointmentsInStorage(target, editedPatient);
+            updatePatientInSchedule(target, editedPatient);
         } catch (IOException e) {
-            logger.warning("Failed to update patient appointments in storage: " + e.getMessage());
+            logger.warning("Failed to update patient in storage: " + e.getMessage());
         }
     }
     //=========== Filtered Person List Accessors =============================================================

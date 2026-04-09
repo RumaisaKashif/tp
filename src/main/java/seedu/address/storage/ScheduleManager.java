@@ -368,28 +368,28 @@ public class ScheduleManager {
     public static void removeApptIfExists(Appointment appt) {
         try {
             Map<String, Object> data = readScheduleFile();
-            
+
             String matchedDoctor = findDoctorKey(data, appt.getDocName());
             if (matchedDoctor == null) {
                 return;
             }
-            
+
             Map<String, Object> doctorSchedule = getDoctorSchedule(data, matchedDoctor);
             if (!doctorSchedule.containsKey(appt.getDate())) {
                 return;
             }
-            
+
             Map<String, String> slots = getDateSlots(doctorSchedule, appt.getDate());
             String standardizedTime = getStandardizedTime(appt.getTime());
-            
+
             if (!slots.containsKey(standardizedTime)) {
                 return;
             }
-            
+
             if (!isPatientAtSlot(slots, standardizedTime, appt.getPatName())) {
                 return;
             }
-            
+
             slots.put(standardizedTime, null);
             writeScheduleFile(data);
         } catch (IOException e) {
@@ -698,4 +698,57 @@ public class ScheduleManager {
     private static boolean isMetadataKey(String key) {
         return LAST_UPDATED_KEY.equals(key) || DOCTOR_NAME_KEY.equals(key) || DOC_ID_KEY.equals(key);
     }
+
+    /**
+     * Updates all appointments with the old patient name to use the new patient name in the schedule.
+     * @param oldName the previous patient name
+     * @param newName the new patient name
+     * @throws IOException
+     */
+    public static void updatePatientNameInSchedule(String oldName, String newName) throws IOException {
+        Map<String, Object> data = readScheduleFile();
+        boolean updated = false;
+
+        for (Map.Entry<String, Object> doctorEntry : data.entrySet()) {
+            if (isMetadataKey(doctorEntry.getKey())) {
+                continue;
+            }
+
+            Object scheduleData = doctorEntry.getValue();
+            if (!(scheduleData instanceof Map<?, ?>)) {
+                continue;
+            }
+
+            @SuppressWarnings("unchecked")
+            Map<String, Object> doctorSchedule = (Map<String, Object>) scheduleData;
+
+            for (Map.Entry<String, Object> dateEntry : doctorSchedule.entrySet()) {
+                if (isMetadataKey(dateEntry.getKey())) {
+                    continue;
+                }
+
+                Object slotsData = dateEntry.getValue();
+                if (!(slotsData instanceof Map<?, ?>)) {
+                    continue;
+                }
+
+                @SuppressWarnings("unchecked")
+                Map<String, String> slotsMap = (Map<String, String>) slotsData;
+
+                for (Map.Entry<String, String> slotEntry : slotsMap.entrySet()) {
+                    if (slotEntry.getValue() != null && slotEntry.getValue().equalsIgnoreCase(oldName)) {
+                        slotsMap.put(slotEntry.getKey(), newName);
+                        updated = true;
+                    }
+                }
+            }
+        }
+
+        if (updated) {
+            ObjectMapper mapper = new ObjectMapper();
+            File file = new File(FILE_PATH);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(file, data);
+        }
+    }
 }
+

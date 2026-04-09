@@ -53,19 +53,19 @@ public class AddApptCommand extends Command {
             model.addAppt(toAdd);
             AppointmentManager.addAppointment(toAdd);
         } catch (IOException e) {
-            // Best-effort rollback if one of the two persistence steps fails.
+            // Rollback if one of the two persistence steps fails.
             try {
                 if (toAdd.getApptID() != Appointment.UNASSIGNED_ID) {
                     AppointmentManager.deleteAppointment(toAdd.getApptID());
                 }
             } catch (IOException ignored) {
-                // Ignore rollback failure.
+                // Unable to rollback from AppointmentManager; continue with model rollback.
             }
 
             try {
                 model.delAppt(toAdd);
             } catch (IOException ignored) {
-                // Ignore rollback failure.
+                // Unable to rollback from model; exception will be thrown below.
             }
             throw new CommandException(e.getMessage());
         }

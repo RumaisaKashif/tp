@@ -18,6 +18,7 @@ public class Appointment {
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("H:mm");
 
     private String patientName;
+    private int patientId;
     private String doctorName;
     private int doctorId;
     private String date;
@@ -37,18 +38,20 @@ public class Appointment {
         this.date = date;
         this.time = time;
         this.doctorId = UNASSIGNED_ID;
+        this.patientId = UNASSIGNED_ID;
         this.apptID = UNASSIGNED_ID;
 
     }
 
     /**
-     * Initialises an Appointment using a doctor id.
-     * The doctor name can be resolved from the model when needed.
+     * Initialises an Appointment using a doctor id and patient id.
+     * The doctor/patient names can be resolved from the model when needed.
      */
-    public Appointment(int doctorId, String patientName, String date, String time) {
+    public Appointment(int doctorId, int patientId, String date, String time) {
         this.doctorId = doctorId;
         this.doctorName = null;
-        this.patientName = patientName;
+        this.patientId = patientId;
+        this.patientName = null;
         this.date = date;
         this.time = time;
         this.apptID = UNASSIGNED_ID;
@@ -68,15 +71,18 @@ public class Appointment {
         this.date = date;
         this.time = time;
         this.doctorId = UNASSIGNED_ID;
+        this.patientId = UNASSIGNED_ID;
         this.apptID = apptID;
     }
 
     /**
-     * Initialises an appointment with an explicit doctor id + appointment id.
+     * Initialises an appointment with explicit doctor/patient ids + appointment id.
      */
-    public Appointment(int doctorId, String doctorName, String patientName, String date, String time, int apptID) {
+    public Appointment(int doctorId, String doctorName, int patientId, String patientName,
+                       String date, String time, int apptID) {
         this.doctorId = doctorId;
         this.doctorName = doctorName;
+        this.patientId = patientId;
         this.patientName = patientName;
         this.date = date;
         this.time = time;
@@ -85,6 +91,14 @@ public class Appointment {
 
     public String getPatName() {
         return this.patientName;
+    }
+
+    public void setPatName(String patientName) {
+        this.patientName = patientName;
+    }
+
+    public int getPatientId() {
+        return patientId;
     }
 
     public String getDocName() {
@@ -130,6 +144,7 @@ public class Appointment {
 
             return this.patientName.equals(other.getPatName())
                     && this.doctorId == other.getDocId()
+                    && this.patientId == other.getPatientId()
                     && this.date.equals(other.getDate())
                     && sameTime;
         } else {

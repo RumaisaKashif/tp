@@ -32,6 +32,7 @@ public class EditApptCommandTest {
     private static final String DOCTOR_NAME = "John Tan";
     private static final int DOCTOR_ID = 1;
     private static final String PATIENT_NAME = "Jane Doe";
+    private static final int PATIENT_ID = 1;
     private static final int APPT_ID = 1;
 
     private LocalDate date;
@@ -56,7 +57,7 @@ public class EditApptCommandTest {
         slots.put("09:30", PATIENT_NAME);
         slots.put("10:00", null);
         writeScheduleWithSlots(DOCTOR_ID, DOCTOR_NAME, date.toString(), slots);
-        writeAppointmentsWithId(APPT_ID, DOCTOR_ID, DOCTOR_NAME, PATIENT_NAME, date.toString(), "09:30");
+        writeAppointmentsWithId(APPT_ID, DOCTOR_ID, DOCTOR_NAME, PATIENT_ID, PATIENT_NAME, date.toString(), "09:30");
     }
 
     @AfterEach
@@ -80,10 +81,11 @@ public class EditApptCommandTest {
     public void execute_validId_success() throws Exception {
         Model model = new ModelManager();
         Doctor doctor = new DoctorBuilder().withName(DOCTOR_NAME).withDocId(DOCTOR_ID).build();
-        Patient patient = new PatientBuilder().withName(PATIENT_NAME).build();
+        Patient patient = new PatientBuilder().withName(PATIENT_NAME).withPatId(PATIENT_ID).build();
         model.addDoctor(doctor);
         model.addPatient(patient);
-        patient.addAppt(new Appointment(DOCTOR_ID, DOCTOR_NAME, PATIENT_NAME, date.toString(), "09:30", APPT_ID));
+        patient.addAppt(new Appointment(DOCTOR_ID, DOCTOR_NAME, PATIENT_ID, PATIENT_NAME,
+                date.toString(), "09:30", APPT_ID));
 
         EditApptCommand command = new EditApptCommand(APPT_ID, null, null, "10:00");
         command.execute(model);
@@ -103,10 +105,11 @@ public class EditApptCommandTest {
     public void execute_invalidTime_showsError() throws Exception {
         Model model = new ModelManager();
         Doctor doctor = new DoctorBuilder().withName(DOCTOR_NAME).withDocId(DOCTOR_ID).build();
-        Patient patient = new PatientBuilder().withName(PATIENT_NAME).build();
+        Patient patient = new PatientBuilder().withName(PATIENT_NAME).withPatId(PATIENT_ID).build();
         model.addDoctor(doctor);
         model.addPatient(patient);
-        patient.addAppt(new Appointment(DOCTOR_ID, DOCTOR_NAME, PATIENT_NAME, date.toString(), "09:30", APPT_ID));
+        patient.addAppt(new Appointment(DOCTOR_ID, DOCTOR_NAME, PATIENT_ID, PATIENT_NAME,
+                date.toString(), "09:30", APPT_ID));
 
         EditApptCommand command = new EditApptCommand(APPT_ID, null, null, "110:00");
         assertThrows(Exception.class, () -> command.execute(model));
@@ -116,10 +119,11 @@ public class EditApptCommandTest {
     public void execute_invalidDoctorId_showsError() throws Exception {
         Model model = new ModelManager();
         Doctor doctor = new DoctorBuilder().withName(DOCTOR_NAME).withDocId(DOCTOR_ID).build();
-        Patient patient = new PatientBuilder().withName(PATIENT_NAME).build();
+        Patient patient = new PatientBuilder().withName(PATIENT_NAME).withPatId(PATIENT_ID).build();
         model.addDoctor(doctor);
         model.addPatient(patient);
-        patient.addAppt(new Appointment(DOCTOR_ID, DOCTOR_NAME, PATIENT_NAME, date.toString(), "09:30", APPT_ID));
+        patient.addAppt(new Appointment(DOCTOR_ID, DOCTOR_NAME, PATIENT_ID, PATIENT_NAME,
+                date.toString(), "09:30", APPT_ID));
 
         EditApptCommand command = new EditApptCommand(APPT_ID, "999", null, null);
         assertThrows(Exception.class, () -> command.execute(model));
@@ -129,10 +133,11 @@ public class EditApptCommandTest {
     public void execute_invalidDate_showsError() throws Exception {
         Model model = new ModelManager();
         Doctor doctor = new DoctorBuilder().withName(DOCTOR_NAME).withDocId(DOCTOR_ID).build();
-        Patient patient = new PatientBuilder().withName(PATIENT_NAME).build();
+        Patient patient = new PatientBuilder().withName(PATIENT_NAME).withPatId(PATIENT_ID).build();
         model.addDoctor(doctor);
         model.addPatient(patient);
-        patient.addAppt(new Appointment(DOCTOR_ID, DOCTOR_NAME, PATIENT_NAME, date.toString(), "09:30", APPT_ID));
+        patient.addAppt(new Appointment(DOCTOR_ID, DOCTOR_NAME, PATIENT_ID, PATIENT_NAME,
+                date.toString(), "09:30", APPT_ID));
 
         EditApptCommand command = new EditApptCommand(APPT_ID, null, "2026-13-01", null);
         assertThrows(Exception.class, () -> command.execute(model));
@@ -155,12 +160,14 @@ public class EditApptCommandTest {
         mapper.writerWithDefaultPrettyPrinter().writeValue(file, data);
     }
 
-    private void writeAppointmentsWithId(int apptId, int doctorId, String doctorName, String patientName,
+    private void writeAppointmentsWithId(int apptId, int doctorId, String doctorName, int patientId,
+                                         String patientName,
                                          String dateValue, String timeValue) throws Exception {
         Map<String, Map<String, Object>> data = new LinkedHashMap<>();
         Map<String, Object> entry = new LinkedHashMap<>();
         entry.put("doctorId", doctorId);
         entry.put("doctorName", doctorName);
+        entry.put("patientId", patientId);
         entry.put("patientName", patientName);
         entry.put("date", dateValue);
         entry.put("time", timeValue);

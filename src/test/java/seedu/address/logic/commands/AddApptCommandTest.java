@@ -34,6 +34,7 @@ public class AddApptCommandTest {
     private static final String DOCTOR_NAME = "John Tan";
     private static final int DOCTOR_ID = 1;
     private static final String PATIENT_NAME = "Jane Doe";
+    private static final int PATIENT_ID = 1;
 
     private LocalDate date;
     private byte[] scheduleBackup;
@@ -81,11 +82,11 @@ public class AddApptCommandTest {
     public void execute_validAppointment_success() throws Exception {
         Model model = new ModelManager();
         Doctor doctor = new DoctorBuilder().withName(DOCTOR_NAME).withDocId(DOCTOR_ID).build();
-        Patient patient = new PatientBuilder().withName(PATIENT_NAME).build();
+        Patient patient = new PatientBuilder().withName(PATIENT_NAME).withPatId(PATIENT_ID).build();
         model.addDoctor(doctor);
         model.addPatient(patient);
 
-        Appointment appt = new Appointment(DOCTOR_ID, PATIENT_NAME, date.format(DATE_FORMAT), "09:30");
+        Appointment appt = new Appointment(DOCTOR_ID, PATIENT_ID, date.format(DATE_FORMAT), "09:30");
         AddApptCommand command = new AddApptCommand(appt);
 
         CommandResult result = command.execute(model);
@@ -97,10 +98,10 @@ public class AddApptCommandTest {
     @Test
     public void execute_invalidDoctorId_throws() {
         Model model = new ModelManager();
-        Patient patient = new PatientBuilder().withName(PATIENT_NAME).build();
+        Patient patient = new PatientBuilder().withName(PATIENT_NAME).withPatId(PATIENT_ID).build();
         model.addPatient(patient);
 
-        Appointment appt = new Appointment(999, PATIENT_NAME, date.format(DATE_FORMAT), "09:30");
+        Appointment appt = new Appointment(999, PATIENT_ID, date.format(DATE_FORMAT), "09:30");
         AddApptCommand command = new AddApptCommand(appt);
 
         assertThrows(CommandException.class, () -> command.execute(model));
@@ -110,11 +111,11 @@ public class AddApptCommandTest {
     public void execute_invalidTime_throws() {
         Model model = new ModelManager();
         Doctor doctor = new DoctorBuilder().withName(DOCTOR_NAME).withDocId(DOCTOR_ID).build();
-        Patient patient = new PatientBuilder().withName(PATIENT_NAME).build();
+        Patient patient = new PatientBuilder().withName(PATIENT_NAME).withPatId(PATIENT_ID).build();
         model.addDoctor(doctor);
         model.addPatient(patient);
 
-        Appointment appt = new Appointment(DOCTOR_ID, PATIENT_NAME, date.format(DATE_FORMAT), "110:00");
+        Appointment appt = new Appointment(DOCTOR_ID, PATIENT_ID, date.format(DATE_FORMAT), "110:00");
         AddApptCommand command = new AddApptCommand(appt);
 
         assertThrows(CommandException.class, () -> command.execute(model));
@@ -124,11 +125,11 @@ public class AddApptCommandTest {
     public void execute_invalidDate_throws() {
         Model model = new ModelManager();
         Doctor doctor = new DoctorBuilder().withName(DOCTOR_NAME).withDocId(DOCTOR_ID).build();
-        Patient patient = new PatientBuilder().withName(PATIENT_NAME).build();
+        Patient patient = new PatientBuilder().withName(PATIENT_NAME).withPatId(PATIENT_ID).build();
         model.addDoctor(doctor);
         model.addPatient(patient);
 
-        Appointment appt = new Appointment(DOCTOR_ID, PATIENT_NAME, "2026-13-01", "09:30");
+        Appointment appt = new Appointment(DOCTOR_ID, PATIENT_ID, "2026-13-01", "09:30");
         AddApptCommand command = new AddApptCommand(appt);
 
         assertThrows(CommandException.class, () -> command.execute(model));
@@ -138,12 +139,12 @@ public class AddApptCommandTest {
     public void execute_dateOutOfRange_throws() {
         Model model = new ModelManager();
         Doctor doctor = new DoctorBuilder().withName(DOCTOR_NAME).withDocId(DOCTOR_ID).build();
-        Patient patient = new PatientBuilder().withName(PATIENT_NAME).build();
+        Patient patient = new PatientBuilder().withName(PATIENT_NAME).withPatId(PATIENT_ID).build();
         model.addDoctor(doctor);
         model.addPatient(patient);
 
         String outOfRangeDate = LocalDate.now().plusDays(8).format(DATE_FORMAT);
-        Appointment appt = new Appointment(DOCTOR_ID, PATIENT_NAME, outOfRangeDate, "09:30");
+        Appointment appt = new Appointment(DOCTOR_ID, PATIENT_ID, outOfRangeDate, "09:30");
         AddApptCommand command = new AddApptCommand(appt);
 
         assertThrows(CommandException.class, () -> command.execute(model));
@@ -153,11 +154,11 @@ public class AddApptCommandTest {
     public void execute_dateNotFound() throws CommandException {
         Model model = new ModelManager();
         Doctor doctor = new DoctorBuilder().withName(DOCTOR_NAME).withDocId(DOCTOR_ID).build();
-        Patient patient = new PatientBuilder().withName(PATIENT_NAME).build();
+        Patient patient = new PatientBuilder().withName(PATIENT_NAME).withPatId(PATIENT_ID).build();
         model.addDoctor(doctor);
         model.addPatient(patient);
 
-        Appointment appt = new Appointment(DOCTOR_ID, PATIENT_NAME,
+        Appointment appt = new Appointment(DOCTOR_ID, PATIENT_ID,
                 date.plusDays(1).format(DATE_FORMAT), "10:00");
         AddApptCommand command = new AddApptCommand(appt);
 

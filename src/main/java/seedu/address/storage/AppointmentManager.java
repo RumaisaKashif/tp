@@ -63,7 +63,10 @@ public class AppointmentManager {
                 .orElse(-1) + 1;
 
         data.put(String.valueOf(nextId),
-                new AppointmentData(appt.getDocId(), appt.getDocName(), appt.getPatName(),
+                new AppointmentData(appt.getDocId() != Appointment.UNASSIGNED_ID ? appt.getDocId() : null,
+                        appt.getDocName(),
+                        appt.getPatientId() != Appointment.UNASSIGNED_ID ? appt.getPatientId() : null,
+                        appt.getPatName(),
                         appt.getDate(), normalizeTime(appt.getTime())));
         writeAppointments(data);
         appt.setApptID(nextId);
@@ -84,7 +87,10 @@ public class AppointmentManager {
         }
 
         return new Appointment(record.doctorId != null ? record.doctorId : Appointment.UNASSIGNED_ID,
-                record.doctorName, record.patientName, record.date, record.time, apptId);
+                record.doctorName,
+                record.patientId != null ? record.patientId : Appointment.UNASSIGNED_ID,
+                record.patientName,
+                record.date, record.time, apptId);
     }
 
     /**
@@ -122,7 +128,10 @@ public class AppointmentManager {
             throw new IOException("Appointment id not found: " + apptId);
         }
 
-        data.put(key, new AppointmentData(appt.getDocId(), appt.getDocName(), appt.getPatName(),
+        data.put(key, new AppointmentData(appt.getDocId() != Appointment.UNASSIGNED_ID ? appt.getDocId() : null,
+                appt.getDocName(),
+                appt.getPatientId() != Appointment.UNASSIGNED_ID ? appt.getPatientId() : null,
+                appt.getPatName(),
                 appt.getDate(), normalizeTime(appt.getTime())));
         writeAppointments(data);
     }
@@ -162,15 +171,18 @@ public class AppointmentManager {
     private static final class AppointmentData {
         private Integer doctorId;
         private String doctorName;
+        private Integer patientId;
         private String patientName;
         private String date;
         private String time;
 
         public AppointmentData() {}
 
-        public AppointmentData(Integer doctorId, String doctorName, String patientName, String date, String time) {
+        public AppointmentData(Integer doctorId, String doctorName, Integer patientId, String patientName,
+                               String date, String time) {
             this.doctorId = doctorId;
             this.doctorName = doctorName;
+            this.patientId = patientId;
             this.patientName = patientName;
             this.date = date;
             this.time = time;

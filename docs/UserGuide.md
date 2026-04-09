@@ -88,11 +88,11 @@ The table below summarises the rules and constraints for all input fields used a
 <box type="info" seamless>
 
 **Additional assumptions:**
-* **Duplicate detection:** Two doctors (or two patients) are considered duplicates if they share the same name (case-insensitive) **and** either the same phone number or the same email.
+* **Doctor duplicate detection:** Two doctors are considered duplicates if they share the same name (case-insensitive) **and** either the same phone number or the same email.
+* **Patient duplicate detection:** Two patients are considered duplicates if they share the same name (case-insensitive) **and** the same email.
 * **Schedule window:** Doctor schedules are displayed and bookable for a rolling 7-day window from today.
 * **Doctor IDs:** Each doctor is automatically assigned a unique, persistent ID that is preserved across edits. IDs are not user-editable.
 * **Patient IDs:** Each patient is automatically assigned a unique, persistent ID that is preserved across edits. IDs are not user-editable.
-* **Patient duplicate detection:** Two patients are considered duplicates if they share the same name (case-insensitive) **and** the same email.
 
 </box>
 
@@ -258,9 +258,17 @@ Examples:
 * `viewsched d/John Tan id/1 date/2026-04-10` displays John Tan's schedule on 10 Apr 2026.
 * `viewsched d/Alice Lim id/2` displays Alice Lim's schedule for the next 7 days.
 
-Screenshot placeholder: add a single-day schedule panel screenshot here.
+  <div class="image-container">
 
-Screenshot placeholder: add a weekly schedule panel screenshot here.
+  ![result for 'viewsched'](images/single_sched.png)
+
+  </div>
+
+  <div class="image-container">
+
+  ![result for 'viewsched weekly'](images/week_sched.png)
+
+  </div>
 
 Expected output:
 ```
@@ -320,17 +328,8 @@ Examples:
 
 Expected output:
 ```
-Edited Patient: John Doe; Phone: 91234567; Email: johndoe@example.com; Address: 123456; Tags:
+Appointment deleted!
 ```
-## Editing an appointment : `editappt`
-Edits the details of an existing appointment
-Format : `editappt d/OLD_DOCTOR date/OLD_DATE time/OLD_TIME (n/NEW_NAME) (d/NEW_DOC) (date/NEW_DATE) (time/NEW_TIME)`
-
-**Notes**
-* Edits the appointment at the old date and time for the old doctor
-* The new fields in brackets are optional, but there must be at least one new field to edit.
-e.g. `editappt d/Louis date/2026-03-28 time/09:00 time/10:00` is acceptable and will rebook the slot to 10am
-for the same patient,but `editappt d/Louis date/2026-03-28 time/09:00` is invalid on its own.
 
 ### Listing all persons : `list`
 
@@ -354,7 +353,11 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
 Examples:
 * `find John` returns `john` and `John Doe`
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
+  <div class="image-container">
+
   ![result for 'find alex david'](images/findAlexDavidResult.png)
+
+  </div>
 
 #### Clearing all entries : `clear`
 

@@ -316,8 +316,11 @@ Expected output:
 ```
 Edited appointment!
 ```
-Warnings:
-* Changing a patient name for an appointment is not possible, user will need to delete the appointment and make a new appointment 
+<box type="warning" seamless>
+
+**Warning:** Changing a patient name for an appointment is not possible. Users will need to delete the appointment and make a new one.
+
+</box>
 
 #### Deleting an appointment : `delappt`
 
@@ -336,23 +339,18 @@ Expected output:
 ```
 Appointment deleted!
 ```
-## Editing an appointment : `editappt`
-Edits the details of an existing appointment
-Format : `editappt apptid/APPT_ID (nd/NEW_DOC) (ndate/NEW_DATE) (ntime/NEW_TIME)`
 
-**Notes**
-* Edits the appointment at the old date and time for the old doctor
-* The new fields in brackets are optional, but there must be at least one new field to edit.
-e.g. `editappt apptid/ID ntime/10:00` is acceptable and will rebook the slot to 10am
-for the same patient,but `editappt apptid/ID` is invalid on its own.
+--------------------------------------------------------------------------------------------------------------------
 
-### Listing all persons : `list`
+### General
+
+#### Listing all persons : `list`
 
 Shows a list of all persons (doctors and patients) in the app.
 
 Format: `list`
 
-### Locating persons by name: `find`
+#### Locating persons by name: `find`
 
 Finds persons whose names contain any of the given keywords.
 

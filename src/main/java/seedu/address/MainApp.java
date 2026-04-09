@@ -22,6 +22,8 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.person.Doctor;
+import seedu.address.model.person.Person;
 import seedu.address.storage.AddressBookStorage;
 import seedu.address.storage.JsonAddressBookStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
@@ -84,32 +86,57 @@ public class MainApp extends Application {
                 storage.getScheduleFilePath()));
 
         ReadOnlyAddressBook initialData = new AddressBook();
-        // Assisted by Copilot
-        ReadOnlyAddressBook patientData;
+        ReadOnlyAddressBook patientData = loadPatientData(storage);
+        ReadOnlyAddressBook doctorData = loadDoctorData(storage);
+
+        initializeDoctorIdTracker(doctorData);
+
+        return new ModelManager(initialData, patientData, doctorData, userPrefs);
+    }
+
+    /**
+     * Loads patient data from storage, returning an empty AddressBook if the file is missing or corrupted.
+     */
+    private ReadOnlyAddressBook loadPatientData(Storage storage) {
         try {
             Optional<ReadOnlyAddressBook> patientDataOptional = storage.readPatientData();
             if (!patientDataOptional.isPresent()) {
                 logger.info("Patient data file not found. Starting with empty patient data.");
             }
-            patientData = patientDataOptional.orElse(new AddressBook());
+            return patientDataOptional.orElse(new AddressBook());
         } catch (DataLoadingException e) {
             logger.warning("Patient data could not be loaded. Starting with empty patient data.");
-            patientData = new AddressBook();
+            return new AddressBook();
         }
+    }
 
-        ReadOnlyAddressBook doctorData;
+    /**
+     * Loads doctor data from storage, returning an empty AddressBook if the file is missing or corrupted.
+     */
+    private ReadOnlyAddressBook loadDoctorData(Storage storage) {
         try {
             Optional<ReadOnlyAddressBook> doctorDataOptional = storage.readDoctorData();
             if (!doctorDataOptional.isPresent()) {
                 logger.info("Doctor data file not found. Starting with empty doctor data.");
             }
-            doctorData = doctorDataOptional.orElse(new AddressBook());
+            return doctorDataOptional.orElse(new AddressBook());
         } catch (DataLoadingException e) {
             logger.warning("Doctor data could not be loaded. Starting with empty doctor data.");
-            doctorData = new AddressBook();
+            return new AddressBook();
         }
+    }
 
-        return new ModelManager(initialData, patientData, doctorData, userPrefs);
+    /**
+     * Sets the Doctor ID tracker to one past the highest existing doctor ID.
+     */
+    private void initializeDoctorIdTracker(ReadOnlyAddressBook doctorData) {
+        int maxId = 0;
+        for (Person p : doctorData.getPersonList()) {
+            if (p instanceof Doctor && ((Doctor) p).getDocId() > maxId) {
+                maxId = ((Doctor) p).getDocId();
+            }
+        }
+        Doctor.setIdTracker(maxId + 1);
     }
 
     private void initLogging(Config config) {

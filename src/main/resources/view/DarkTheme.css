@@ -1,26 +1,37 @@
+.root {
+    -menu-bar:      #193b68;
+    -background:    #f3f8ff;
+    -borders:       #dde8f8;
+    -filled-card:   white;
+    -status-bar:    #d5e6ff;
+    -dark-text:     #193b68;
+    -normal-text:   #6f85a4;
+    -light-text:    #dde8f8;
+}
+
 .background {
-    -fx-background-color: derive(#f5ebfa, 20%);
-    background-color: #a56abd; /* Used in the default.html file */
+    -fx-background-color: -background;
+    background-color: white; /* Used in the default.html file */
 }
 
 .label {
     -fx-font-size: 11pt;
     -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: #49225b;
+    -fx-text-fill: white;
     -fx-opacity: 0.9;
 }
 
 .label-bright {
     -fx-font-size: 11pt;
     -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: #49225b;
+    -fx-text-fill: white;
     -fx-opacity: 1;
 }
 
 .label-header {
     -fx-font-size: 32pt;
     -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: #49225b;
+    -fx-text-fill: white;
     -fx-opacity: 1;
 }
 
@@ -40,9 +51,9 @@
 }
 
 .table-view {
-    -fx-base: #f5ebfa;
-    -fx-control-inner-background: #f5ebfa;
-    -fx-background-color: #f5ebfa;
+    -fx-base: -background;
+    -fx-control-inner-background: -background;
+    -fx-background-color: -background;
     -fx-table-cell-border-color: transparent;
     -fx-table-header-border-color: transparent;
     -fx-padding: 5;
@@ -84,13 +95,13 @@
 .split-pane {
     -fx-border-radius: 1;
     -fx-border-width: 1;
-    -fx-background-color: derive(white, 20%);
+    -fx-background-color: -background;
 }
 
 .list-view {
     -fx-background-insets: 0;
     -fx-padding: 0;
-    -fx-background-color: derive(white, 20%);
+    -fx-background-color: -background;
 }
 
 .list-cell {
@@ -99,12 +110,10 @@
     -fx-padding: 0 0 0 0;
 }
 
-.list-cell:filled:even {
-    -fx-background-color: #f5ebfa;
-}
-
-.list-cell:filled:odd {
-    -fx-background-color: #e7dbef;
+.list-cell:filled {
+    -fx-background-color: -filled-card;
+    -fx-border-width: 0 0 2 0;
+    -fx-border-color: derive(-borders, 10%);
 }
 
 .list-cell:filled:selected {
@@ -114,44 +123,45 @@
 .list-cell:filled:selected #cardPane {
     -fx-border-color: #3e7b91;
     -fx-border-width: 1;
+    -fx-border-radius: 4;
 }
 
 .list-cell .label {
-    -fx-text-fill: #49225b;
+    /* text fill to be overridden by .cell_big_label or .cell_small_label */
 }
 
 .cell_big_label {
     -fx-font-family: "Segoe UI Semibold";
-    -fx-font-size: 16px;
-    -fx-text-fill: #010504;
+    -fx-font-size: 18px;
+    -fx-text-fill: -dark-text;
 }
 
 .cell_small_label {
     -fx-font-family: "Segoe UI";
     -fx-font-size: 13px;
-    -fx-text-fill: #010504;
+    -fx-text-fill: -normal-text;
 }
 
 /* text input area */
 .stack-pane {
-     -fx-background-color: derive(#f5ebfa, 20%);
+     -fx-background-color: -background;
 }
 
 .pane-with-border {
-     -fx-background-color: derive(white, 20%);
-     -fx-border-color: derive(white, 10%);
+     -fx-background-color: -background;
+     -fx-border-color: -background;
      -fx-border-top-width: 1px;
 }
 
 .status-bar {
-    -fx-background-color: derive(white, 30%);
+    -fx-background-color: -status-bar;
 }
 
 .result-display {
     -fx-background-color: transparent;
     -fx-font-family: "Segoe UI Light";
     -fx-font-size: 13pt;
-    -fx-text-fill: white;
+    -fx-text-fill: -normal-text;
 }
 
 .result-display .label {
@@ -160,19 +170,19 @@
 
 .status-bar .label {
     -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: white;
+    -fx-text-fill: -normal-text;
     -fx-padding: 4px;
     -fx-pref-height: 30px;
 }
 
 .status-bar-with-border {
-    -fx-background-color: derive(white, 30%);
-    -fx-border-color: derive(white, 25%);
+    -fx-background-color: -background;
+    -fx-border-color: -borders;
     -fx-border-width: 1px;
 }
 
 .status-bar-with-border .label {
-    -fx-text-fill: white;
+    -fx-text-fill: -normal-text;
 }
 
 .grid-pane {
@@ -194,7 +204,8 @@
 }
 
 .menu-bar {
-    -fx-background-color: derive(#6e3482, 20%);
+    -fx-background-color: -menu-bar;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 0, 10);
 }
 
 .menu-bar .label {
@@ -283,11 +294,11 @@
 }
 
 .scroll-bar {
-    -fx-background-color: derive(#e7dbef, 20%);
+    -fx-background-color: transparent;
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: derive(#f5ebfa, 50%);
+    -fx-background-color: -borders;
     -fx-background-insets: 3;
 }
 
@@ -321,25 +332,44 @@
 
 /* Time labels */
 .time-label {
-    -fx-text-fill: #cccccc;
-    -fx-font-size: 11px;
+    -fx-text-fill: #49225b;
+    -fx-font-size: 13px;
+}
+
+.date-label {
+    -fx-text-fill: #49225b;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
 }
 
 /* Available slot */
-.slot-available {
-    -fx-background-color: #4CAF50; /* green */
+.schedule-slot {
     -fx-border-color: #555;
+    -fx-border-width: 1;
+    -fx-background-insets: 0;
+    -fx-background-radius: 2;
+    -fx-border-radius: 2;
+    -fx-font-size: 11px;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+}
+
+.slot-available {
+    -fx-background-color: #e7dbef; /* green */
+    -fx-text-fill: transparent;
 }
 
 /* Booked slot */
 .slot-booked {
-    -fx-background-color: #F44336; /* red */
-    -fx-border-color: #555;
+    -fx-background-color: #49225b; /* red */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
 }
 
 #cardPane {
     -fx-background-color: transparent;
-    -fx-border-width: 0;
+    -fx-border-width: 0 0 3 0;
+    -fx-border-color: -borders;
 }
 
 #commandTypeLabel {
@@ -350,12 +380,12 @@
 #commandTextField {
     -fx-background-color: transparent #383838 transparent #383838;
     -fx-background-insets: 0;
-    -fx-border-color: #e7dbef #e7dbef #ffffff #e7dbef;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: derive(-borders, -20%);
     -fx-border-insets: 0;
-    -fx-border-width: 1;
     -fx-font-family: "Segoe UI Light";
     -fx-font-size: 13pt;
-    -fx-text-fill: #49225b;
+    -fx-text-fill: -dark-text;
 }
 
 #filterField, #personListPanel, #personWebpage {
@@ -363,8 +393,7 @@
 }
 
 #resultDisplay .content {
-    -fx-background-color: transparent, #e7dbef, transparent, #e7dbef;
-    -fx-background-radius: 0;
+    -fx-background-color: -background;
 }
 
 #tags {
@@ -380,4 +409,3 @@
     -fx-background-radius: 2;
     -fx-font-size: 11;
 }
-

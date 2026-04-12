@@ -276,28 +276,28 @@ public class EditPatCommandTest {
     }
 
     @Test
-    public void editPatDescriptor_equals_sameObject_returnsTrue() {
+    public void descriptorEquals_sameObject_returnsTrue() {
         EditPatCommand.EditPatDescriptor descriptor = new EditPatientDescriptorBuilder()
             .withName("Alice").build();
         assertTrue(descriptor.equals(descriptor));
     }
 
     @Test
-    public void editPatDescriptor_equals_null_returnsFalse() {
+    public void descriptorEquals_null_returnsFalse() {
         EditPatCommand.EditPatDescriptor descriptor = new EditPatientDescriptorBuilder()
             .withName("Alice").build();
         assertFalse(descriptor.equals(null));
     }
 
     @Test
-    public void editPatDescriptor_equals_differentType_returnsFalse() {
+    public void descriptorEquals_differentType_returnsFalse() {
         EditPatCommand.EditPatDescriptor descriptor = new EditPatientDescriptorBuilder()
             .withName("Alice").build();
         assertFalse(descriptor.equals("string"));
     }
 
     @Test
-    public void editPatDescriptor_equals_differentName_returnsFalse() {
+    public void descriptorEquals_differentName_returnsFalse() {
         EditPatCommand.EditPatDescriptor desc1 = new EditPatientDescriptorBuilder()
             .withName("Alice").build();
         EditPatCommand.EditPatDescriptor desc2 = new EditPatientDescriptorBuilder()
@@ -306,7 +306,7 @@ public class EditPatCommandTest {
     }
 
     @Test
-    public void editPatDescriptor_equals_differentPhone_returnsFalse() {
+    public void descriptorEquals_differentPhone_returnsFalse() {
         EditPatCommand.EditPatDescriptor desc1 = new EditPatientDescriptorBuilder()
             .withPhone("11111111").build();
         EditPatCommand.EditPatDescriptor desc2 = new EditPatientDescriptorBuilder()
@@ -315,7 +315,7 @@ public class EditPatCommandTest {
     }
 
     @Test
-    public void editPatDescriptor_equals_differentEmail_returnsFalse() {
+    public void descriptorEquals_differentEmail_returnsFalse() {
         EditPatCommand.EditPatDescriptor desc1 = new EditPatientDescriptorBuilder()
             .withEmail("a@a.com").build();
         EditPatCommand.EditPatDescriptor desc2 = new EditPatientDescriptorBuilder()
@@ -324,7 +324,7 @@ public class EditPatCommandTest {
     }
 
     @Test
-    public void editPatDescriptor_equals_differentAddress_returnsFalse() {
+    public void descriptorEquals_differentAddress_returnsFalse() {
         EditPatCommand.EditPatDescriptor desc1 = new EditPatientDescriptorBuilder()
             .withAddress("Addr 1").build();
         EditPatCommand.EditPatDescriptor desc2 = new EditPatientDescriptorBuilder()

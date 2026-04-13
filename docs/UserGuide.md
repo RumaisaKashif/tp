@@ -400,7 +400,8 @@ CLInicDesk data is saved to the hard disk automatically after any command that c
 
 * Doctor data is saved automatically to `[JAR file location]/data/doctors.json`.
 * Patient data is saved automatically to `[JAR file location]/data/patients.json`.
-* Appointment data is saved automatically to `[JAR file location]/data/schedule.json`.
+* Appointment data is saved automatically to `[JAR file location]/data/appointments.json`.
+* Schedule data is saved automatically to `[JAR file location]/data/schedule.json`.
 
 Advanced users are welcome to update data directly by editing these files.
 

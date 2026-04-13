@@ -2,6 +2,7 @@ package seedu.address.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -585,4 +586,56 @@ public class ModelManagerTest {
         });
     }
 
+    @Test
+    public void setPatient_nameChange_updatesAppointmentsInStorage() throws Exception {
+        backupAndRestore(() -> {
+            LocalDate today = LocalDate.now();
+            Doctor doctor = new DoctorBuilder().withName("SetPatDoc")
+                    .withPhone("77770000").withEmail("setpat@doc.com").build();
+            Patient patient = new PatientBuilder().withName("OldPatName")
+                    .withPhone("66660000").withEmail("setpat@pat.com").build();
+            modelManager.addDoctor(doctor);
+            modelManager.addPatient(patient);
+            ScheduleManager.addDoctorSchedule(doctor);
+
+            Appointment appt = new Appointment(doctor.getDocId(), "SetPatDoc", patient.getPatientId(),
+                    "OldPatName", today.toString(), "09:00", -1);
+            int apptId = AppointmentManager.addAppointment(appt);
+            patient.addAppt(appt);
+            ScheduleManager.addAppt(appt);
+
+            Patient editedPatient = new PatientBuilder(patient).withName("NewPatName").build();
+            modelManager.setPatient(patient, editedPatient);
+
+            Appointment stored = AppointmentManager.getAppointmentById(apptId);
+            assertEquals("NewPatName", stored.getPatName());
+        });
+    }
+
+    @Test
+    public void deletePatient_patientWithAppointments_appointmentsDeleted() throws Exception {
+        backupAndRestore(() -> {
+            LocalDate today = LocalDate.now();
+            Doctor doctor = new DoctorBuilder().withName("DelPatDocName")
+                    .withPhone("77770000").withEmail("delpat@doc.com").build();
+            Patient patient = new PatientBuilder().withName("DelWithAppt")
+                    .withPhone("66660000").withEmail("delpat@pat.com").build();
+            modelManager.addDoctor(doctor);
+            modelManager.addPatient(patient);
+            ScheduleManager.addDoctorSchedule(doctor);
+
+            Appointment appt = new Appointment(doctor.getDocId(), "DelPatDocName", patient.getPatientId(),
+                    "DelWithAppt", today.toString(), "09:00", -1);
+            int apptId = AppointmentManager.addAppointment(appt);
+            patient.addAppt(appt);
+            ScheduleManager.addAppt(appt);
+
+            modelManager.deletePatient(patient);
+
+            assertNull(AppointmentManager.getAppointmentById(apptId));
+        });
+    }
 }
+
+
+

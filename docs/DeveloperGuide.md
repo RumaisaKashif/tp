@@ -281,31 +281,31 @@ searching, scrolling, or clicking during live interactions.
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​ | I want to …​ | So that I can…​ |
-|----------|----------|--------------|-----------------|
-| `* * *`  | new receptionist | see sample patient and practitioner data | understand what kind of information the system holds |
-| `* * *`  | receptionist starting real usage | remove any existing data | begin with a clean and accurate dataset |
-| `* * *`  | first-time user | understand what each field represents | avoid misusing or misunderstanding stored information |
-| `* * *`  | receptionist | add a new patient's contact details | quickly reference them in future interactions |
-| `* * *`  | receptionist | add a new doctor's contact details | track which doctors are available for appointments |
-| `* * *`  | receptionist | delete a patient who no longer visits the clinic | keep search results uncluttered |
-| `* * *`  | receptionist | delete a doctor from the system | remove practitioners who are no longer with the clinic |
-| `* * *`  | receptionist | view a practitioner's schedule for a specific day | answer availability questions quickly |
-| `* * *`  | receptionist | book an appointment slot for a patient with a doctor | confirm appointments during calls |
-| `* * *`  | receptionist | cancel an existing appointment | free up slots when patients reschedule or cancel |
-| `* *`    | receptionist | search for a patient using partial names | find them even if I don't remember exact details |
-| `* *`    | receptionist | search for a patient using a phone number | identify callers immediately |
-| `* *`    | receptionist | view a patient's contact details in one place | avoid asking the patient for information repeatedly |
-| `* *`    | receptionist | update a patient's contact information | keep records accurate |
-| `* *`    | receptionist | see which practitioners are currently on duty | avoid giving incorrect availability information to patients |
-| `* *`    | receptionist | quickly switch between different practitioners' schedules | compare availability during a call |
-| `* *`    | receptionist who types fast | perform common actions using the keyboard | avoid slowing down to use the mouse |
-| `* *`    | receptionist | correct mistakes quickly | ensure small typing errors don't disrupt my workflow |
-| `* *`    | long-time receptionist | clean up outdated entries | keep the system efficient over time |
-| `*`      | receptionist | check upcoming availability without leaving my current task | stay focused during calls |
-| `*`      | receptionist | return to my previous view quickly | avoid losing context during busy periods |
-| `*`      | receptionist returning after a break | quickly regain an overview of practitioners and patients | resume work smoothly |
-| `*`      | receptionist | rely on consistent data organisation | avoid relearning the system after time away |
+| Priority | As a …​ | I want to …​                                               | So that I can…​                                             |
+|----------|----------|------------------------------------------------------------|-------------------------------------------------------------|
+| `* * *`  | new receptionist | see sample patient and practitioner data                   | understand what kind of information the system holds        |
+| `* * *`  | receptionist starting real usage | remove any existing data                                   | begin with a clean and accurate dataset                     |
+| `* * *`  | first-time user | understand what each field represents                      | avoid misusing or misunderstanding stored information       |
+| `* * *`  | receptionist | add a new patient's contact details                        | quickly reference them in future interactions               |
+| `* * *`  | receptionist | add a new doctor's contact details                         | track which doctors are available for appointments          |
+| `* * *`  | receptionist | delete a patient who no longer visits the clinic           | keep search results uncluttered                             |
+| `* * *`  | receptionist | delete a doctor from the system                            | remove practitioners who are no longer with the clinic      |
+| `* * *`  | receptionist | view a practitioner's schedule for a specific day          | answer availability questions quickly                       |
+| `* * *`  | receptionist | book an appointment slot for a patient with a doctor       | confirm appointments during calls                           |
+| `* * *`  | receptionist | cancel an existing appointment                             | free up slots when patients reschedule or cancel            |
+| `* *`    | receptionist | search for a patient by name                               | look up their contact details                               |
+| `* *`    | receptionist | search for a patient using a phone number                  | identify callers immediately                                |
+| `* *`    | receptionist | view a patient's contact details in one place              | avoid asking the patient for information repeatedly         |
+| `* *`    | receptionist | update a patient's contact information                     | keep records accurate                                       |
+| `* *`    | receptionist | see which practitioners are currently on duty              | avoid giving incorrect availability information to patients |
+| `* *`    | receptionist | quickly switch between different practitioners' schedules  | compare availability during a call                          |
+| `* *`    | receptionist who types fast | perform common actions using the keyboard                  | avoid slowing down to use the mouse                         |
+| `* *`    | receptionist | correct mistakes quickly                                   | ensure small typing errors don't disrupt my workflow        |
+| `* *`    | long-time receptionist | clean up outdated entries                                  | keep the system efficient over time                         |
+| `*`      | receptionist | check upcoming availability without leaving my current task | stay focused during calls                                   |
+| `*`      | receptionist | return to my previous view quickly                         | avoid losing context during busy periods                    |
+| `*`      | receptionist returning after a break | quickly regain an overview of practitioners and patients   | resume work smoothly                                        |
+| `*`      | receptionist | rely on consistent data organisation                       | avoid relearning the system after time away                 |
 
 ---
 

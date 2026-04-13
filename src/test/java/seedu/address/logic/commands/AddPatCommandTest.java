@@ -1,3 +1,4 @@
+//Use copilot and initial add tests to create and generate unit tests for AddPatCommandTest.java
 package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -85,5 +86,13 @@ public class AddPatCommandTest {
         assertTrue(actual.contains("98765432"));
         assertTrue(actual.contains("123 Street"));
         assertTrue(actual.contains("alice@example.com"));
+    }
+
+    @Test
+    public void toStringMethod_command() {
+        Patient alice = new PatientBuilder().withName("Alice").build();
+        AddPatCommand command = new AddPatCommand(alice);
+        String result = command.toString();
+        assertTrue(result.contains("toAdd"));
     }
 }

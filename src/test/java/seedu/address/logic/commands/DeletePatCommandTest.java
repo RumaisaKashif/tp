@@ -1,3 +1,4 @@
+// Use copilot and initial delete tests to create and generate unit tests for DeletePatCommandTest.java
 package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -102,6 +103,13 @@ public class DeletePatCommandTest {
 
         // different person -> returns false
         assertFalse(deleteFirstCommand.equals(deleteSecondCommand));
+    }
+
+    @Test
+    public void toStringMethod() {
+        DeletePatCommand command = new DeletePatCommand(INDEX_FIRST_PERSON);
+        String result = command.toString();
+        assertTrue(result.contains("targetIndex"));
     }
 
     @Test

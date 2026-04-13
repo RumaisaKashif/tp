@@ -122,22 +122,22 @@ public class ScheduleManagerTest {
     // test written by codex
     @Test
     public void delAppt_validAppointment_clearsSlot() throws Exception {
-        LocalDate today = LocalDate.now();
-        writeScheduleFile(createDoctor(1, "John Tan"), today, "Jane Lim");
+        LocalDate futureDate = LocalDate.now().plusDays(1);
+        writeScheduleFile(createDoctor(1, "John Tan"), futureDate, "Jane Lim");
 
-        Appointment appt = new Appointment(1, "John Tan", 2, "Jane Lim", today.toString(), "09:00", -1);
+        Appointment appt = new Appointment(1, "John Tan", 2, "Jane Lim", futureDate.toString(), "09:00", -1);
         ScheduleManager.delAppt(appt);
 
-        Map<String, String> schedule = ScheduleManager.getScheduleByDocId(1, today.toString());
+        Map<String, String> schedule = ScheduleManager.getScheduleByDocId(1, futureDate.toString());
         assertNull(schedule.get("09:00"));
     }
 
     @Test
     public void delAppt_wrongPatient_throwsIoException() throws Exception {
-        LocalDate today = LocalDate.now();
-        writeScheduleFile(createDoctor(1, "John Tan"), today, "Alice Lim");
+        LocalDate futureDate = LocalDate.now().plusDays(1);
+        writeScheduleFile(createDoctor(1, "John Tan"), futureDate, "Alice Lim");
 
-        Appointment appt = new Appointment(1, "John Tan", 2, "Jane Lim", today.toString(), "09:00", -1);
+        Appointment appt = new Appointment(1, "John Tan", 2, "Jane Lim", futureDate.toString(), "09:00", -1);
         IOException thrown = assertThrows(IOException.class, () -> ScheduleManager.delAppt(appt));
         assertEquals("No such appointment exists.", thrown.getMessage());
     }

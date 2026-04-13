@@ -96,6 +96,16 @@ public class ScheduleManagerTest {
         assertNull(ScheduleManager.getScheduleByDocId(99, LocalDate.now().toString()));
     }
 
+    @Test
+    public void getScheduleByDocId_missingDate_throwsIllegalArgumentException() throws Exception {
+        LocalDate today = LocalDate.now();
+        writeScheduleFile(createDoctor(1, "John Tan"), today, null);
+
+        String futureDate = today.plusDays(2).toString();
+
+        assertThrows(IllegalArgumentException.class, () -> ScheduleManager.getScheduleByDocId(1, futureDate));
+    }
+
     // test written by codex
     @Test
     public void addAppt_validAppointment_booksSlot() throws Exception {
@@ -108,6 +118,28 @@ public class ScheduleManagerTest {
         Map<String, String> schedule = ScheduleManager.getScheduleByDocId(1, today.plusDays(1).toString());
         assertEquals("Jane Lim", schedule.get("09:00"));
         assertEquals("Jane Lim", ScheduleManager.getPatientAtSlot("John Tan", today.plusDays(1).toString(), "09:00"));
+    }
+
+    @Test
+    public void getPatientAtSlotByDocId_existingAppointment_returnsPatient() throws Exception {
+        LocalDate today = LocalDate.now();
+        writeScheduleFile(createDoctor(1, "John Tan"), today, null);
+
+        Appointment appt = new Appointment(1, "John Tan", 2, "Jane Lim", today.toString(), "09:00", -1);
+        ScheduleManager.addAppt(appt);
+
+        assertEquals("Jane Lim", ScheduleManager.getPatientAtSlotByDocId(1, today.toString(), "09:00"));
+    }
+
+    @Test
+    public void getPatientAtSlot_existingAppointment_returnsPatient() throws Exception {
+        LocalDate today = LocalDate.now();
+        writeScheduleFile(createDoctor(1, "John Tan"), today, null);
+
+        Appointment appt = new Appointment(1, "John Tan", 7, "Jane Lim", today.toString(), "09:00", -1);
+        ScheduleManager.addAppt(appt);
+
+        assertEquals("Jane Lim", ScheduleManager.getPatientAtSlot("John Tan", today.toString(), "09:00"));
     }
 
     @Test

@@ -11,14 +11,14 @@ public class Name {
 
     public static final String MESSAGE_CONSTRAINTS =
         "Names should only contain letters, and may include "
-            + "single spaces, apostrophes, or hyphens between words. "
+            + "single spaces, apostrophes, slashes or hyphens between words. "
             + "Name should not be blank";
 
     /*
      * The first character of the address must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.
      */
-    public static final String VALIDATION_REGEX = "^[a-zA-Z]+([ '-][a-zA-Z]+)*$";
+    public static final String VALIDATION_REGEX = "^[a-zA-Z]+([ '/\\-][a-zA-Z]+)*$";
 
     public final String fullName;
 

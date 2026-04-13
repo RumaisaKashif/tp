@@ -12,7 +12,7 @@
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Acknowledgements**
-* GitHub Copilot has been used to assist code writing, particularly in helping get unstuck and improving the User Guide's UI.
+* GitHub Copilot has been used by the team to assist code writing, particularly in helping get unstuck, improving the User Guide's UI, and updating some sections of the Developer Guide.
 
 --------------------------------------------------------------------------------------------------------------------
 

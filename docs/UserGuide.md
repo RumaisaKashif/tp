@@ -281,7 +281,7 @@ Schedule for John Tan (ID: 1) on 2026-04-10
 
 Books an appointment with a doctor for a patient on a specified date and time.
 
-Format: `addappt id/DOCTOR_ID pid/PATIENT_ID date/YYYY-MM-DD time/H:MM`
+Format: `addappt id/DOCTOR_ID pid/PATIENT_ID date/YYYY-MM-DD time/HH:MM`
 
 **Notes:**
 * Books an appointment for the patient with the doctor at the specified date and time.
@@ -307,7 +307,7 @@ Format: `editappt apptid/APPOINTMENT_ID [nid/NEW_DOCTOR_ID] [ndate/NEW_DATE] [nt
 * The new fields in square brackets are optional, but at least one new field must be provided.
 * `nid/` is used to change the doctor (provide the doctor ID).
 * `ndate/` is used to change the appointment date (format: YYYY-MM-DD).
-* `ntime/` is used to change the appointment time (format: H:MM, e.g. 09:00 or 9:00).
+* `ntime/` is used to change the appointment time (format: HH:MM, e.g. 09:00 or 9:00).
 
 Examples:
 * `editappt apptid/3 ntime/10:00` changes the appointment with ID 3 to 10:00.
@@ -470,7 +470,7 @@ Furthermore, certain edits can cause CLInicDesk to behave in unexpected ways (e.
 </tr>
 <tr>
   <td><strong>Add Appointment</strong></td>
-  <td><code>addappt id/DOCTOR_ID pid/PATIENT_ID date/YYYY-MM-DD time/H:MM</code><br>e.g., <code>addappt id/1 pid/3 date/2026-04-10 time/09:00</code></td>
+  <td><code>addappt id/DOCTOR_ID pid/PATIENT_ID date/YYYY-MM-DD time/HH:MM</code><br>e.g., <code>addappt id/1 pid/3 date/2026-04-10 time/09:00</code></td>
 </tr>
 <tr>
   <td><strong>Edit Appointment</strong></td>

@@ -26,10 +26,10 @@ import seedu.address.logic.parser.exceptions.ParseException;
 public class MainWindow extends UiPart<Stage> {
 
     private static final String FXML = "MainWindow.fxml";
-    private static final double SINGLE_SCHEDULE_MIN_WIDTH = 760;
-    private static final double SINGLE_SCHEDULE_MIN_HEIGHT = 760;
-    private static final double WEEKLY_SCHEDULE_MIN_WIDTH = 1320;
-    private static final double WEEKLY_SCHEDULE_MIN_HEIGHT = 820;
+    private static final double SINGLE_SCHEDULE_MIN_WIDTH = 500;
+    private static final double SINGLE_SCHEDULE_MIN_HEIGHT = 570;
+    private static final double WEEKLY_SCHEDULE_MIN_WIDTH = 1100;
+    private static final double WEEKLY_SCHEDULE_MIN_HEIGHT = 590;
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 

@@ -208,7 +208,7 @@ public class ScheduleManager {
         //checks if date is within 7 days
         LocalDate apptDate = LocalDate.parse(date);
         LocalDate today = LocalDate.now();
-        LocalDate sevenDaysLater = today.plusDays(7);
+        LocalDate sevenDaysLater = today.plusDays(6);
 
         if (apptDate.isBefore(today) || apptDate.isAfter(sevenDaysLater)) {
             throw new IOException("Appointment date must be within 7 days from today!");
@@ -217,6 +217,7 @@ public class ScheduleManager {
         if (!isValidTime(time)) {
             throw new IOException("Please input a valid time. Time must be formatted as H:MM (e.g. 9:00 or 09:00)");
         }
+
 
         ObjectMapper mapper = new ObjectMapper();
         File file = new File(FILE_PATH);
@@ -238,9 +239,15 @@ public class ScheduleManager {
             LocalTime apptTime = LocalTime.parse(time, inputFormatter);
             LocalTime firstTime = LocalTime.parse(sortedSlots.firstKey(), storageFormatter);
             LocalTime lastTime = LocalTime.parse(sortedSlots.lastKey(), storageFormatter);
+            LocalTime now = LocalTime.now();
 
             if (apptTime.isBefore(firstTime) || apptTime.isAfter(lastTime)) {
                 throw new IOException("Please choose a time within operating hours");
+            }
+            if (apptTime.isBefore(now) && apptDate.isEqual(today)) {
+                throw new IOException("This slot has passed, "
+                                        + "Please choose a time after " + now.format(storageFormatter));
+
             }
 
             // Formats input into JSON key format, to prevent dummy entries/overwrites.
@@ -250,9 +257,12 @@ public class ScheduleManager {
                 throw new IOException("The time " + time + " is not a valid 30-minute slot for this doctor.");
             }
 
-            if (slots.get(standardizedTime) == null) {
+            String occupant = slots.get(standardizedTime);
+            if (occupant == null) {
                 slots.put(standardizedTime, patName);
                 mapper.writerWithDefaultPrettyPrinter().writeValue(file, data);
+            } else if (occupant.equalsIgnoreCase(patName)) {
+                throw new IOException("This appointment already exists");
             } else {
                 throw new IOException("This slot is already booked. "
                         + "Please edit the appointment if you wish to change it");

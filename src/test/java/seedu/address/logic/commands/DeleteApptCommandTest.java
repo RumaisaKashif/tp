@@ -151,6 +151,24 @@ public class DeleteApptCommandTest {
         assertThrows(CommandException.class, () -> command.execute(model));
     }
 
+    @Test
+    public void execute_deleteByApptId_success() throws Exception {
+        //written by copilot
+        Model model = new ModelManager();
+        Doctor doctor = new DoctorBuilder().withName(DOCTOR_NAME).withDocId(DOCTOR_ID).build();
+        Patient patient = new PatientBuilder().withName(PATIENT_NAME).withPatId(PATIENT_ID).build();
+        model.addDoctor(doctor);
+        model.addPatient(patient);
+        patient.addAppt(new Appointment(DOCTOR_ID, DOCTOR_NAME, PATIENT_ID, PATIENT_NAME,
+                date.toString(), "09:30", APPT_ID));
+
+        DeleteApptCommand command = new DeleteApptCommand(APPT_ID);
+        command.execute(model);
+
+        assertEquals(0, patient.getApptList().size());
+        assertNull(AppointmentManager.getAppointmentById(APPT_ID));
+    }
+
     private void writeScheduleWithSlots(int doctorId, String doctorName, String dateValue, Map<String, String> slots)
             throws Exception {
         Map<String, Object> data = new LinkedHashMap<>();

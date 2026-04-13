@@ -281,6 +281,13 @@ public class ModelManager implements Model {
         }
         appt.setPatName(patient.getName().fullName);
 
+        // Check if patient already has appointment at this time
+        for (Appointment existing : patient.getApptList()) {
+            if (existing.getDate().equals(appt.getDate()) && existing.getTime().equals(appt.getTime())) {
+                throw new IOException("Patient already has an appointment at this time");
+            }
+        }
+
         Doctor doctor = findDoctorById(appt.getDocId());
         if (doctor == null) {
             throw new IOException("Doctor not found: " + appt.getDocId());
@@ -343,11 +350,7 @@ public class ModelManager implements Model {
 
         String scheduledPatName = ScheduleManager.getPatientAtSlotByDocId(oldDocId, oldDate, standardizedOldTime);
         if (scheduledPatName == null) {
-            throw new IOException("No appointment exists at: " + oldDocName + " on " + oldDate + " at " + oldTime);
-        }
-
-        if (!scheduledPatName.equalsIgnoreCase(oldPatName)) {
-            throw new IOException("Appointment details do not match the schedule.");
+            throw new IOException("No appointment exists at: " + oldDocId + " on " + oldDate + " at " + oldTime);
         }
 
         int finalDocId = oldDocId;
@@ -623,13 +626,9 @@ public class ModelManager implements Model {
         patients.setPatient(target, editedPatient);
         addressBook.setPerson(target, editedPatient);
 
-        try {
-            updatePatientAppointmentsInStorage(target, editedPatient);
-            updatePatientInSchedule(target, editedPatient);
-            updatePatientNameInAppointmentList(target, editedPatient);
-        } catch (IOException e) {
-            logger.warning("Failed to update patient in storage: " + e.getMessage());
-        }
+
+        updatePatientNameInAppointmentList(target, editedPatient);
+
     }
     //=========== Filtered Person List Accessors =============================================================
 

@@ -444,7 +444,7 @@ public class ModelManagerTest {
     public void addAppt_patientMultipleDoctorsSameTime_throws() throws Exception {
         //written by copilot
         backupAndRestore(() -> {
-            LocalDate today = LocalDate.now();
+            LocalDate today = LocalDate.now().plusDays(1);
             Doctor doctor1 = new DoctorBuilder().withName("DocOne").withDocId(70)
                     .withPhone("99990000").withEmail("doc1@test.com").build();
             Doctor doctor2 = new DoctorBuilder().withName("DocTwo").withDocId(71)
@@ -469,7 +469,7 @@ public class ModelManagerTest {
     public void editAppt_incompleteScheduleData_healsAndSucceeds() throws Exception {
         //written by copilot
         backupAndRestore(() -> {
-            LocalDate today = LocalDate.now();
+            LocalDate today = LocalDate.now().plusDays(1);
             Doctor doctor = new DoctorBuilder().withName("HealDocName").withDocId(80)
                     .withPhone("99990000").withEmail("heal@doc.com").build();
             Patient patient = new PatientBuilder().withName("HealPat")

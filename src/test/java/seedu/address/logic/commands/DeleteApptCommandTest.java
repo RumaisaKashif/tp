@@ -159,18 +159,14 @@ public class DeleteApptCommandTest {
         Patient patient = new PatientBuilder().withName(PATIENT_NAME).withPatId(PATIENT_ID).build();
         model.addDoctor(doctor);
         model.addPatient(patient);
-        ScheduleManager.addDoctorSchedule(doctor);
+        patient.addAppt(new Appointment(DOCTOR_ID, DOCTOR_NAME, PATIENT_ID, PATIENT_NAME,
+                date.toString(), "09:30", APPT_ID));
 
-        Appointment appt = new Appointment(DOCTOR_ID, PATIENT_ID, date.toString(), "10:00");
-        AppointmentManager.addAppointment(appt);
-        patient.addAppt(appt);
-        ScheduleManager.addAppt(appt);
-
-        DeleteApptCommand command = new DeleteApptCommand(appt.getApptID());
+        DeleteApptCommand command = new DeleteApptCommand(APPT_ID);
         command.execute(model);
 
         assertEquals(0, patient.getApptList().size());
-        assertEquals(null, AppointmentManager.getAppointmentById(appt.getApptID()));
+        assertNull(AppointmentManager.getAppointmentById(APPT_ID));
     }
 
     private void writeScheduleWithSlots(int doctorId, String doctorName, String dateValue, Map<String, String> slots)

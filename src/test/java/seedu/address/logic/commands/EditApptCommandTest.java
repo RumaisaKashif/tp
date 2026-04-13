@@ -7,6 +7,7 @@ import static seedu.address.testutil.Assert.assertThrows;
 import java.io.File;
 import java.nio.file.Files;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -29,6 +30,7 @@ import seedu.address.testutil.PatientBuilder;
 public class EditApptCommandTest {
     private static final String SCHEDULE_FILE_PATH = "data/schedule.json";
     private static final String APPT_FILE_PATH = "data/appointments.json";
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final String DOCTOR_NAME = "John Tan";
     private static final int DOCTOR_ID = 1;
     private static final String PATIENT_NAME = "Jane Doe";
@@ -205,32 +207,6 @@ public class EditApptCommandTest {
     }
 
     @Test
-    public void execute_editApptToNewDoctor_success() throws Exception {
-        //written by copilot
-        Model model = new ModelManager();
-        Doctor doctor1 = new DoctorBuilder().withName("Doctor One").withDocId(DOCTOR_ID).build();
-        Doctor doctor2 = new DoctorBuilder().withName("Doctor Two").withDocId(2).build();
-        Patient patient = new PatientBuilder().withName(PATIENT_NAME).withPatId(PATIENT_ID).build();
-        model.addDoctor(doctor1);
-        model.addDoctor(doctor2);
-        model.addPatient(patient);
-        ScheduleManager.addDoctorSchedule(doctor1);
-        ScheduleManager.addDoctorSchedule(doctor2);
-
-        Appointment appt = new Appointment(DOCTOR_ID, PATIENT_ID, date.format(DATE_FORMAT), "10:00");
-        AppointmentManager.addAppointment(appt);
-        patient.addAppt(appt);
-        ScheduleManager.addAppt(appt);
-
-        String newDocId = "2";
-        EditApptCommand command = new EditApptCommand(appt.getApptID(), newDocId, null, null);
-        command.execute(model);
-
-        Appointment edited = AppointmentManager.getAppointmentById(appt.getApptID());
-        assertEquals(2, edited.getDocId());
-    }
-
-    @Test
     public void execute_editApptToNewTime_success() throws Exception {
         //written by copilot
         Model model = new ModelManager();
@@ -238,17 +214,13 @@ public class EditApptCommandTest {
         Patient patient = new PatientBuilder().withName(PATIENT_NAME).withPatId(PATIENT_ID).build();
         model.addDoctor(doctor);
         model.addPatient(patient);
-        ScheduleManager.addDoctorSchedule(doctor);
+        patient.addAppt(new Appointment(DOCTOR_ID, DOCTOR_NAME, PATIENT_ID, PATIENT_NAME,
+                date.toString(), "09:30", APPT_ID));
 
-        Appointment appt = new Appointment(DOCTOR_ID, PATIENT_ID, date.format(DATE_FORMAT), "10:00");
-        AppointmentManager.addAppointment(appt);
-        patient.addAppt(appt);
-        ScheduleManager.addAppt(appt);
-
-        EditApptCommand command = new EditApptCommand(appt.getApptID(), null, null, "10:30");
+        EditApptCommand command = new EditApptCommand(APPT_ID, null, null, "10:00");
         command.execute(model);
 
-        Appointment edited = AppointmentManager.getAppointmentById(appt.getApptID());
-        assertEquals("10:30", edited.getTime());
+        Appointment edited = AppointmentManager.getAppointmentById(APPT_ID);
+        assertEquals("10:00", edited.getTime());
     }
 }

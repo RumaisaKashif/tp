@@ -396,9 +396,9 @@ public class ScheduleManagerTest {
     }
 
     @Test
-    public void addAppt_duplicateAppointmentSamePatient_throwsIOException() throws Exception {
+    public void addAppt_duplicateAppointmentSamePatient_throwsException() throws Exception {
         //written by copilot
-        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now().plusDays(1);
         writeScheduleFile(createDoctor(1, "John Tan"), today, null);
 
         Appointment appt = new Appointment(1, "John Tan", 2, "Jane Lim", today.toString(), "09:00", -1);

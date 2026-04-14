@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
@@ -315,6 +316,38 @@ public class ModelManagerTest {
     }
 
     @Test
+    public void setPatient_sameNameDifferentPatients_updatesOnlyTargetPatientSchedule() throws Exception {
+        backupAndRestore(() -> {
+            LocalDate appointmentDate = LocalDate.now().plusDays(1);
+            Doctor doctor = new DoctorBuilder().withName("ScheduleDoc").withDocId(200)
+                    .withPhone("11110000").withEmail("sched@doc.com").build();
+            Patient firstPatient = new PatientBuilder().withName("Sam Lee").withPatId(1)
+                    .withPhone("22220000").withEmail("sam1@pat.com").build();
+            Patient secondPatient = new PatientBuilder().withName("Sam Lee").withPatId(2)
+                    .withPhone("33330000").withEmail("sam2@pat.com").build();
+
+            modelManager.addDoctor(doctor);
+            modelManager.addPatient(firstPatient);
+            modelManager.addPatient(secondPatient);
+            ScheduleManager.addDoctorSchedule(doctor);
+
+            Appointment firstAppointment = new Appointment(200, "ScheduleDoc", firstPatient.getPatientId(),
+                    "Sam Lee", appointmentDate.toString(), "09:00", -1);
+            Appointment secondAppointment = new Appointment(200, "ScheduleDoc", secondPatient.getPatientId(),
+                    "Sam Lee", appointmentDate.toString(), "09:30", -1);
+            modelManager.addAppt(firstAppointment);
+            modelManager.addAppt(secondAppointment);
+
+            Patient renamedPatient = new PatientBuilder(firstPatient).withName("Sam Lee Updated").build();
+            modelManager.setPatient(firstPatient, renamedPatient);
+
+            Map<String, String> schedule = ScheduleManager.getScheduleByDocId(200, appointmentDate.toString());
+            assertEquals("Sam Lee Updated", schedule.get("09:00"));
+            assertEquals("Sam Lee", schedule.get("09:30"));
+        });
+    }
+
+    @Test
     public void setDoctor_doctorExists_doctorUpdatedSuccessfully() {
         Doctor doctor = new DoctorBuilder().withName("Doc One").withPhone("11112222")
                 .withEmail("docone@doc.com").build();
@@ -587,6 +620,5 @@ public class ModelManagerTest {
         });
     }
 }
-
 
 

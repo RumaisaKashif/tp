@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import seedu.address.model.appointment.Appointment;
 import seedu.address.model.person.Doctor;
+import seedu.address.model.person.Patient;
 
 /**
  * Manages access to the schedule data stored in the schedule JSON file.
@@ -691,55 +692,45 @@ public class ScheduleManager {
     }
 
     /**
-     * Updates all appointments with the old patient name to use the new patient name in the schedule.
-     * @param oldName the previous patient name
-     * @param newName the new patient name
-     * @throws IOException
+     * Updates the specific appointments belonging to a renamed patient in the schedule.
+     * This avoids changing slots for other patients who happen to share the same name.
+     *
+     * @param oldPatient the patient before the rename
+     * @param newPatient the patient after the rename
+     * @throws IOException if the schedule file cannot be read or written
      */
-    public static void updatePatientNameInSchedule(String oldName, String newName) throws IOException {
+    public static void updatePatientNameInSchedule(Patient oldPatient, Patient newPatient) throws IOException {
         Map<String, Object> data = readScheduleFile();
         boolean updated = false;
+        String oldName = oldPatient.getName().fullName;
+        String newName = newPatient.getName().fullName;
 
-        for (Map.Entry<String, Object> doctorEntry : data.entrySet()) {
-            if (isMetadataKey(doctorEntry.getKey())) {
+        for (Appointment appointment : oldPatient.getApptList()) {
+            String doctorKey = appointment.getDocId() != Appointment.UNASSIGNED_ID
+                    ? findDoctorKeyByDocId(data, appointment.getDocId())
+                    : findDoctorKey(data, appointment.getDocName());
+
+            if (doctorKey == null) {
                 continue;
             }
 
-            Object scheduleData = doctorEntry.getValue();
-            if (!(scheduleData instanceof Map<?, ?>)) {
+            Map<String, Object> doctorSchedule = getDoctorSchedule(data, doctorKey);
+            if (!doctorSchedule.containsKey(appointment.getDate())) {
                 continue;
             }
 
-            @SuppressWarnings("unchecked")
-            Map<String, Object> doctorSchedule = (Map<String, Object>) scheduleData;
+            Map<String, String> slotsMap = getDateSlots(doctorSchedule, appointment.getDate());
+            String standardizedTime = getStandardizedTime(appointment.getTime());
+            String currentOccupant = slotsMap.get(standardizedTime);
 
-            for (Map.Entry<String, Object> dateEntry : doctorSchedule.entrySet()) {
-                if (isMetadataKey(dateEntry.getKey())) {
-                    continue;
-                }
-
-                Object slotsData = dateEntry.getValue();
-                if (!(slotsData instanceof Map<?, ?>)) {
-                    continue;
-                }
-
-                @SuppressWarnings("unchecked")
-                Map<String, String> slotsMap = (Map<String, String>) slotsData;
-
-                for (Map.Entry<String, String> slotEntry : slotsMap.entrySet()) {
-                    if (slotEntry.getValue() != null && slotEntry.getValue().equalsIgnoreCase(oldName)) {
-                        slotsMap.put(slotEntry.getKey(), newName);
-                        updated = true;
-                    }
-                }
+            if (currentOccupant != null && currentOccupant.equalsIgnoreCase(oldName)) {
+                slotsMap.put(standardizedTime, newName);
+                updated = true;
             }
         }
 
         if (updated) {
-            ObjectMapper mapper = new ObjectMapper();
-            File file = new File(FILE_PATH);
-            mapper.writerWithDefaultPrettyPrinter().writeValue(file, data);
+            writeScheduleFile(data);
         }
     }
 }
-

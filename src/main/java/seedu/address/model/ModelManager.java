@@ -579,7 +579,7 @@ public class ModelManager implements Model {
         String newName = newPatient.getName().fullName;
 
         if (!oldName.equals(newName)) {
-            ScheduleManager.updatePatientNameInSchedule(oldName, newName);
+            ScheduleManager.updatePatientNameInSchedule(oldPatient, newPatient);
         }
     }
 

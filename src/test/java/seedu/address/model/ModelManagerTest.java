@@ -584,5 +584,7 @@ public class ModelManagerTest {
             assertEquals(0, patient.getApptList().size());
         });
     }
-
 }
+
+
+
